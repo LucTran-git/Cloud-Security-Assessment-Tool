@@ -34,9 +34,9 @@ secretAccessKey = credsData['AWS']['secret_access_key']
 accountSession = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 AccountservicesList = accountSession.get_available_services()
 
-#The demenstarion beleow is used to show how to connect to services and get it's configurations, We'll use EC2 as en eceample:
+#The demonstration below is used to show how to connect to services and get its configurations, We'll use EC2 as an example:
 
-#1.since an account can have multiple instances in diffrent regions, get a list of regions where the service is available
+#1.since an account can have multiple instances in different regions, get a list of regions where the service is available
 ec2_regions = []
 for regionName in accountSession.get_available_regions('ec2'):
     try:
@@ -46,7 +46,7 @@ for regionName in accountSession.get_available_regions('ec2'):
     except botocore.exceptions.ClientError as e:
         print(f"region unavailable: {regionName}: {str(e)}")
 
-#2.create a list of service "cliant" objects for each region for the service and obtain a description of those EC2 instances
+#2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
 ec2_cliants_List = []
 ec2_deprecation_list = []
 for i in range(len(ec2_regions)):
