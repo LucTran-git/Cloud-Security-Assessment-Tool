@@ -5,7 +5,7 @@ import botocore
 import os
 
 
-# json encoder used for outputing service data into json file
+# json encoder used for outputting service data into json file
 class jsonHelper(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (datetime.datetime, datetime.date)):
