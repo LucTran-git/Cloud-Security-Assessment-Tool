@@ -34,7 +34,7 @@ secretAccessKey = credsData['AWS']['secret_access_key']
 accountSession = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 AccountservicesList = accountSession.get_available_services()
 
-#The demonstration below is used to show how to connect to services and get its configurations, We'll use EC2 as an example:
+#The demonstration below is used to show how to connect to services and get their configurations, We'll use EC2 as an example:
 
 #1.since an account can have multiple instances in different regions, get a list of regions where the service is available
 ec2_regions = []
@@ -47,19 +47,19 @@ for regionName in accountSession.get_available_regions('ec2'):
         print(f"region unavailable: {regionName}: {str(e)}")
 
 #2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
-ec2_cliants_List = []
-ec2_deprecation_list = []
+ec2_clients_List = []
+ec2_description_list = []
 for i in range(len(ec2_regions)):
-    ec2_cliants_List.append(accountSession.client('ec2', ec2_regions[i]))
-    ec2_deprecation_list.append(ec2_cliants_List[i].describe_instances())
+    ec2_clients_List.append(accountSession.client('ec2', ec2_regions[i]))
+    ec2_description_list.append(ec2_clients_List[i].describe_instances())
 
 #3. output info about the service for all regions allowed
 if not os.path.exists('EC2/'):
     os.makedirs('EC2/')
     
-for i in range(len(ec2_deprecation_list)):
+for i in range(len(ec2_description_list)):
     with open('EC2/'+ ec2_regions[i] +'.json', 'w+') as outPutJsonFile:
-        json.dump(ec2_deprecation_list[i], outPutJsonFile, indent=4, cls=jsonHelper)
+        json.dump(ec2_description_list[i], outPutJsonFile, indent=4, cls=jsonHelper)
 
 
         
