@@ -12,7 +12,9 @@ from .abstract import *
 def analyze_policies(iam):
     '''This is a docstring. Use this to give an explanation of your method when you hover over it in the IDE
     
-    You can make a docstring by putting a multi-line comment immediately below a function def'''
+    You can make a docstring by putting a multi-line comment immediately below a function def
+    
+    Also works for files when importing them, like I did with abstract.py'''
     return NotImplementedError
     response = iam.list_policies(
         #Scope='All'|'AWS'|'Local',
