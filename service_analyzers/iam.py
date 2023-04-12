@@ -11,18 +11,19 @@ from .abstract import *
 # abstract functions are called as iam.func_name()
 # instead of iam.abstract.func_name() 
 
-policy_docs = {}
+
+
+# Warnings are a dict of (list of dicts), as follows:
+# { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
+# We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
+
+# Policy checks
+passrole_actions = ['*','iam:*','iam:PassRole']
+policy_docs = {} # These are the JSON files that define policies
 policy_warnings = {} # dict of (list of dicts) 
-            # { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
-            # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
 
 #created another dict since ec2 checks output differs from IAM due the multi-ragion feature. feel free to change this if you want
 EC2_VPC_checks = {} # dict of (list of dicts) 
-            # { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
-            # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
-
-
-passrole_actions = ['*','iam:*','iam:PassRole']
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 
@@ -48,7 +49,6 @@ def check_IAM_EC2_configurations(ec2_clients):
          
         if len(instanceIds) < 1:
             return
-
 
         #Describe the IAM instance profile associations for the instances
         response = ec2_client.describe_iam_instance_profile_associations(
@@ -201,7 +201,7 @@ def check_IAM_EC2_configurations(ec2_clients):
 
                             EC2_VPC_checks_writer("VPC endpoint cross-account access", dict)  
 
-    def check_EC2_securty_groups_traffic_rules(ec2_client):
+    def check_EC2_security_groups_traffic_rules(ec2_client):
 
         #get all security groups
         response = ec2_client.describe_security_groups()
@@ -248,7 +248,7 @@ def check_IAM_EC2_configurations(ec2_clients):
 
                             EC2_VPC_checks_writer("Allow RFC-1918 CIDRs Inbound Traffic", warning)
 
-    def check_EC2_securty_groups_launch_by_wizard(ec2_client):
+    def check_EC2_security_groups_launch_by_wizard(ec2_client):
 
         response = ec2_client.describe_security_groups()
 
@@ -267,7 +267,7 @@ def check_IAM_EC2_configurations(ec2_clients):
 
                     EC2_VPC_checks_writer("Security group created by launch wizard ", dict)
 
-    def check_EC2_securty_groups_default(ec2_client):
+    def check_EC2_security_groups_default(ec2_client):
 
         response = ec2_client.describe_security_groups()
 
@@ -292,9 +292,9 @@ def check_IAM_EC2_configurations(ec2_clients):
         check_VPC_public_to_private_communication(ec2_client)
         check_EC2_unused_security_groups(ec2_client)
         check_VPC_unknown_crossaccount_access(ec2_client)
-        check_EC2_securty_groups_traffic_rules(ec2_client)
-        check_EC2_securty_groups_launch_by_wizard(ec2_client)
-        check_EC2_securty_groups_default(ec2_client)
+        check_EC2_security_groups_traffic_rules(ec2_client)
+        check_EC2_security_groups_launch_by_wizard(ec2_client)
+        check_EC2_security_groups_default(ec2_client)
 
         #we can output the results using the following:
         """

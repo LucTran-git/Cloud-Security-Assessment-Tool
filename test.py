@@ -27,7 +27,7 @@ session = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=sec
 clients = {}
 clients['iam'] = session.client('iam')
 
-###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
+# -------------------------------------------------- EC2 SECTION ---------------------------------------------------------------------
 #1.since an account can have multiple instances in different regions, get a list of regions where the service is available
 ec2_regions = []
 for regionName in session.get_available_regions('ec2'):
@@ -48,7 +48,7 @@ for i in range(len(ec2_regions)):
 clients['ec2'] = ec2_clients_List
 
 iam.check_IAM_EC2_configurations(clients['ec2'])
-# ---------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------
 
 # clients['s3'] = session.client('s3')
 # clients['vpc'] = session.client('vpc')
