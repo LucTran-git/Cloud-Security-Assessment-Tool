@@ -16,19 +16,26 @@ policy_warnings = {} # dict of (list of dicts)
             # { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
             # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
 
+#created another dict since ec2 checks output differs from IAM due the multi-ragion feature. feel free to change this if you want
+EC2_VPC_checks = {} # dict of (list of dicts) 
+            # { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
+            # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
 
 
 passrole_actions = ['*','iam:*','iam:PassRole']
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 
+#helper used to print contents of policy_warnings
+
 #helper used to write info to policy_warnings
-def policy_warnings_writer(policy_name, error_dict):
-    if policy_name not in policy_warnings:
-        policy_warnings[policy_name] = []
+def EC2_VPC_checks_writer(policy_name, error_dict):
+    if policy_name not in EC2_VPC_checks:
+        # policy_docs[policy_name] = []
+        EC2_VPC_checks[policy_name] = []
 
 
-    policy_warnings[policy_name].append(error_dict)
+    EC2_VPC_checks[policy_name].append(error_dict)
 
 #function used to analyze IAM/Security groups related info for EC2/VPC
 def check_IAM_EC2_configurations(ec2_clients):
@@ -55,7 +62,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                         ,"explanation": "EC2 instances should use an IAM role instead of hard-coded AWS credentials"
                         , "recommendation": "Attach an IAM role to the EC2 instance using the EC2 console or the AWS CLI"}
                 
-                policy_warnings_writer("IAM Role Association", dict)
+                EC2_VPC_checks_writer("IAM Role Association", dict)
 
             return
             
@@ -68,7 +75,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                         ,"explanation": "EC2 instances should use an IAM role instead of hard-coded AWS credentials"
                         , "recommendation": "Attach an IAM role to the EC2 instance using the EC2 console or the AWS CLI"}
                 
-                policy_warnings_writer("IAM Role Association", dict)
+                EC2_VPC_checks_writer("IAM Role Association", dict)
     
     def check_VPC_public_to_private_communication (ec2_client):
 
@@ -132,7 +139,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                                         "recommendation": "Disable communication between public and private VPC tiers or ensure that appropriate security measures are in place such as security groups and network ACLs."
                                     }
 
-                                    policy_warnings_writer("VPC public to private communication", dict)
+                                    EC2_VPC_checks_writer("VPC public to private communication", dict)
 
     def check_EC2_unused_security_groups(ec2_client):
         #Get a list of all instances
@@ -163,7 +170,7 @@ def check_IAM_EC2_configurations(ec2_clients):
             "recommendation": "Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure."
             }
 
-            policy_warnings_writer("Unused EC2 Security Group", dict)  
+            EC2_VPC_checks_writer("Unused EC2 Security Group", dict)  
 
     def check_VPC_unknown_crossaccount_access(ec2_client):
 
@@ -192,7 +199,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                             "recommendation": "Ensure that VPC endpoints are properly secured by restricting access to only authorized accounts or resources."
                             }
 
-                            policy_warnings_writer("VPC endpoint cross-account access", dict)  
+                            EC2_VPC_checks_writer("VPC endpoint cross-account access", dict)  
 
     def check_EC2_securty_groups_traffic_rules(ec2_client):
 
@@ -213,7 +220,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                             "recommendation": "Update the security group's inbound rules to limit traffic to only necessary IP addresses and ports"
                         }
 
-                        policy_warnings_writer("Allow All Inbound Traffic", warning)
+                        EC2_VPC_checks_writer("Allow All Inbound Traffic", warning)
 
 
             #Check if the security group has a rule that allows all outbound traffic
@@ -225,7 +232,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                             "recommendation": "Update the security group's outbound rules to limit traffic to only necessary ports"
                         }
 
-                    policy_warnings_writer("Allow All Outbound Ports", warning)
+                    EC2_VPC_checks_writer("Allow All Outbound Ports", warning)
 
             #check for rule allowing inbound traffci from RFC-1918 CIDRs
             for rule in group['IpPermissions']:
@@ -239,7 +246,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                                 "recommendation": "Update the security group's inbound rules to block inbound traffic from RFC-1918 CIDRs"
                             }
 
-                            policy_warnings_writer("Allow RFC-1918 CIDRs Inbound Traffic", warning)
+                            EC2_VPC_checks_writer("Allow RFC-1918 CIDRs Inbound Traffic", warning)
 
     def check_EC2_securty_groups_launch_by_wizard(ec2_client):
 
@@ -258,7 +265,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                                 "recommendation": "Review and modify the security group settings or create a separate security group"
                             }
 
-                    policy_warnings_writer("Security group created by launch wizard ", dict)
+                    EC2_VPC_checks_writer("Security group created by launch wizard ", dict)
 
     def check_EC2_securty_groups_default(ec2_client):
 
@@ -277,7 +284,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                                 "recommendation": "Create a separate security group"
                             }
 
-                    policy_warnings_writer("Default Security Group used", dict)
+                    EC2_VPC_checks_writer("Default Security Group used", dict)
 
 
     for ec2_client in ec2_clients:
@@ -289,7 +296,16 @@ def check_IAM_EC2_configurations(ec2_clients):
         check_EC2_securty_groups_launch_by_wizard(ec2_client)
         check_EC2_securty_groups_default(ec2_client)
 
-        #the results of the above tests are stored in policy_warnings and are ready to be outputed
+        #we can output the results using the following:
+        """
+        # Convert the dict to a JSON string with indentation
+        json_str = json.dumps(EC2_VPC_checks, indent=4)
+
+        # Write the JSON string to a file
+        with open("my_file.json", "w") as f:
+            f.write(json_str)   
+        """     
+        
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
 

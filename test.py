@@ -54,5 +54,5 @@ iam.check_IAM_EC2_configurations(clients['ec2'])
 # clients['vpc'] = session.client('vpc')
 
 #iam.run_all_checks(clients['iam'])
-iam.analyze_local_managed_policies(clients['iam']) # btw i get an error 
+iam.analyze_local_managed_policies(clients['iam'])  
 #print(clients['iam'])
