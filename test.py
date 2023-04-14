@@ -1,11 +1,13 @@
 import boto3
 import json
+import botocore
 
 from service_analyzers import iam
 from service_analyzers import ec2
 from service_analyzers import s3
 from service_analyzers import vpc
 
+# open session with the account
 with open('Credentials.json', 'r') as credsFile:
     credsData = json.load(credsFile)
 
@@ -21,13 +23,36 @@ secretAccessKey = credsData['AWS']['secret_access_key']
 
 session = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 
+# populate services clients
 clients = {}
 clients['iam'] = session.client('iam')
-# clients['ec2'] = session.client('ec2')
+
+###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
+#1.since an account can have multiple instances in different regions, get a list of regions where the service is available
+ec2_regions = []
+for regionName in session.get_available_regions('ec2'):
+    try:
+        ec2_clientTMP = session.client('ec2', region_name=regionName)
+        ec2_clientTMP.describe_instances()
+        ec2_regions.append(regionName)
+    except botocore.exceptions.ClientError as e:
+        #print(f"region unavailable: {regionName}: {str(e)}")
+        pass
+
+#2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
+ec2_clients_List = []
+
+for i in range(len(ec2_regions)):
+    ec2_clients_List.append(session.client('ec2', ec2_regions[i]))
+
+clients['ec2'] = ec2_clients_List
+
+iam.check_IAM_EC2_configurations(clients['ec2'])
+# ---------------------------------------------------------------------------------------------------------------------------------------
+
 # clients['s3'] = session.client('s3')
 # clients['vpc'] = session.client('vpc')
 
 #iam.run_all_checks(clients['iam'])
-iam.analyze_local_managed_policies(clients['iam'])
-
+iam.analyze_local_managed_policies(clients['iam'])  
 #print(clients['iam'])
