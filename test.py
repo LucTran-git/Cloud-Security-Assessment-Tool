@@ -62,3 +62,6 @@ iam.check_IAM_EC2_configurations(clients['ec2'])
 #iam.run_all_checks(clients['iam'])
 iam.analyze_local_managed_policies(clients['iam'])  
 #print(clients['iam'])
+# ---------------------------------------------------------------------------------------------------------------------------------------
+ec2 = boto3.client('ec2')
+ec2.check_EC2_VPC_configurations(ec2)
