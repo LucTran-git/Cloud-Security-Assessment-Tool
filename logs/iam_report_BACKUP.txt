@@ -1,0 +1,42 @@
+Warning Category: test
+    1)
+        WARNING:
+            iam:PassRole overly permissive
+        EXPLANATION:
+            Any IAM identity (i.e. users, groups, or roles) 
+            with this policy can assign roles to an instance
+            of any resource.
+            
+            As such, this policy can be exploited to grant
+            unintended permissions to any resource.
+            
+            More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+        RECOMMENDATION:
+            If you want iam:PassRole to be permitted:
+            - Specify resource ARNs explicitly in 'Resource'
+            - Add the iam:PassedToService condition key to the statement
+            
+            If you do not want iam:PassRole to be permitted:
+            - Specify iam actions explicitly in 'Action'
+
+Warning Category: test
+    2)
+        WARNING:
+            iam:PassRole overly permissive
+        EXPLANATION:
+            Any IAM identity (i.e. users, groups, or roles) 
+            with this policy can assign roles to an instance
+            of any resource.
+            
+            As such, this policy can be exploited to grant
+            unintended permissions to any resource.
+            
+            More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+        RECOMMENDATION:
+            If you want iam:PassRole to be permitted:
+            - Specify resource ARNs explicitly in 'Resource'
+            - Add the iam:PassedToService condition key to the statement
+            
+            If you do not want iam:PassRole to be permitted:
+            - Specify iam actions explicitly in 'Action'
+

@@ -1,5 +1,7 @@
 import boto3
 import json
+import shutil
+import textwrap
 import datetime
 import botocore
 import os
@@ -11,41 +13,71 @@ from .abstract import *
 # abstract functions are called as iam.func_name()
 # instead of iam.abstract.func_name() 
 
-policy_docs = {}
-policy_warnings = {} # dict of (list of dicts) 
-            # { 'policy_name' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
-            # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
+# We separate the warning info as follows to make it easier to format the report in different ways e.g. txt vs csv:
+    # dict of (list of dicts) 
+    # { <categorization> : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
 
-#created another dict since ec2 checks output differs from IAM due the multi-ragion feature. feel free to change this if you want
-EC2_VPC_checks = {} # dict of (list of dicts) 
-            # { 'warning category' : [{'warning' : 'text', 'explanation' : 'text', 'recommendation' : 'text'}, ...] }
-            # We separate the warning info in this way to make it easier to format the report in different ways e.g. txt vs csv
-
+policy_warnings = {} 
+    # { 'policy_name' : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
+EC2_VPC_checks = {} # create another dict since ec2 checks output differs from IAM due the multi-region feature
+    # { 'warning category' : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
 
 passrole_actions = ['*','iam:*','iam:PassRole']
+policy_docs = {}
+count = [0] # trust me... just leave it. Global vars don't work for ints, but they do for lists
 
-###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
+file_formats = ['txt','json'] # extend as necessary in future
+file_formats_used = ['txt']
+filestem = 'logs/iam_report'
+# Backup a previous iam_report file, then clear it for a new report
+for format in file_formats_used: 
+    with open(f'{filestem}.{format}', 'a+') as f: # open for write+read; 
+        # using a+ since it works if file exists (unlike r+), and does not truncate before I get to read text (unlike w+)
+        f.seek(0)
+        if f.read() != '': # Don't backup empty files (which might happen due to errors that exit program)
+            shutil.copyfile(src=f'{filestem}.{format}', dst=f'{filestem}_BACKUP.{format}')
+            f.truncate(0) # Clear the file
+# Now we can open with 'a' option for all writing
 
-#helper used to print contents of dict as text or json. 
 def dict_printer(dict, file_format):
+    """ Helper used to print contents of a category of warnings as text or json.\n
+        Write warnings and recommendations to a log file\n
+        Parameters: 
+            `dict` with key warning category (usually), and value a list containing instances of a warning
+                Note: the key may not necessarily be warning category; it depends on how the warnings were organized
 
-    #Write warnings and recommendations to a log file\n
-    #Parameters: file format\n
-    #Returns: filepath of written file
+            `string` representing file format 
+        Returns: 
+            `string` representing filepath of written file
+    """
+    # spacer = lambda num, txt: \
+    #     textwrap.TextWrapper(initial_indent=' '*num, subsequent_indent=' '*num, 
+    #                         width=500,replace_whitespace=False, ).fill(txt) + '\n'
+    
+    indenter = lambda num, txt: \
+    ' '*num + re.sub('\n', '\n'+' '*num, txt)
+
+    warning_count = count[0]
+    filepath = f'{filestem}.{file_format}'
+
     if file_format == 'txt':
-        filepath = 'logs/iam_report.txt'
-
-        with open(filepath, "w") as f:
+        with open(filepath, 'a') as f:
             for warning_category, warnings in dict.items():
-                f.write(f"----- Warnning Catogry: {warning_category} -----\n")
-                for warning in warnings:
-                    f.write(f"| Warnning | \n")
-                    f.write(f" {warning['warning']} \n")
-                    f.write(f"| Explanation | \n")
-                    f.write(f" {warning['explanation']} \n")
-                    f.write(f"| Recommendation | \n")
-                    f.write(f" {warning['recommendation']} \n")
-                    f.write("\n")
+                f.write(f"Warning Category: {warning_category}\n")
+                for w in warnings:
+                    # I (Luc) think we should use 'section_label' and 'text' to get warning info
+                    # so that mispelling/miscapitalization in dict keys do not affect the code
+                    # And also, it makes printing adaptable in case we add more/different labels
+
+                    # section_label is (usually) 'warning' 'explanation', or 'recommendation'
+                    # text is corresponding warning/explanation/recommendation text
+                    warning_count += 1
+                    
+                    f.write(indenter(4, f"{warning_count})") + '\n')
+                    for section_label, text in w.items():
+                        f.write(indenter(8, f"{section_label.upper()}:") + '\n')
+                        f.write(indenter(12, f"{text}") + '\n')
+                    f.write('\n')
 
     if file_format == 'json':
         filepath = 'logs/iam_report.json'
@@ -57,7 +89,10 @@ def dict_printer(dict, file_format):
         with open(filepath, "w") as f:
             f.write(json_str)   
 
+    count[0] = warning_count
     return filepath
+
+###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 
 #helper used to append an instance of a warning to EC2_VPC_checks[warning_name]
 def EC2_VPC_checks_writer(warning_category, error_dict):
@@ -68,9 +103,9 @@ def EC2_VPC_checks_writer(warning_category, error_dict):
 
 #function used to analyze IAM/Security groups related info for EC2/VPC
 def check_IAM_EC2_configurations(ec2_clients):
-    
+    print('Running IAM configuration checks for EC2...')
     def check_IAM_role(ec2_client):
-
+        print('Checking IAM roles...')
         #get instances ids
         initial_response = ec2_client.describe_instances()
         instanceIds = [instance['InstanceId'] for reservation in initial_response['Reservations'] for instance in reservation['Instances']]
@@ -107,7 +142,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                 EC2_VPC_checks_writer("IAM Role Association", dict)
     
     def check_VPC_public_to_private_communication (ec2_client):
-
+        print('Checking VPC public to private communication...')
         
       
         #get ec2 instances ids
@@ -171,6 +206,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                                     EC2_VPC_checks_writer("VPC public to private communication", dict)
 
     def check_EC2_unused_security_groups(ec2_client):
+        print('Checking for EC2 unused security groups...')
         #Get a list of all instances
         instances = ec2_client.describe_instances()
 
@@ -202,7 +238,7 @@ def check_IAM_EC2_configurations(ec2_clients):
             EC2_VPC_checks_writer("Unused EC2 Security Group", dict)  
 
     def check_VPC_unknown_crossaccount_access(ec2_client):
-
+        print('Checking for VPC unknown cross-account access...')
 
 
 
@@ -231,7 +267,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                             EC2_VPC_checks_writer("VPC endpoint cross-account access", dict)  
 
     def check_EC2_securty_groups_traffic_rules(ec2_client):
-
+        print('Checking for unsafe security groups traffic rules...')
         #get all security groups
         response = ec2_client.describe_security_groups()
 
@@ -278,7 +314,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                             EC2_VPC_checks_writer("Allow RFC-1918 CIDRs Inbound Traffic", warning)
 
     def check_EC2_securty_groups_launch_by_wizard(ec2_client):
-
+        print('Checking that for security groups launched by wizard...')
         response = ec2_client.describe_security_groups()
 
         for group in response['SecurityGroups']:
@@ -297,7 +333,7 @@ def check_IAM_EC2_configurations(ec2_clients):
                     EC2_VPC_checks_writer("Security group created by launch wizard ", dict)
 
     def check_EC2_securty_groups_default(ec2_client):
-
+        print('Checking for default security groups...')
         response = ec2_client.describe_security_groups()
 
         for group in response['SecurityGroups']:
@@ -335,6 +371,7 @@ def check_IAM_EC2_configurations(ec2_clients):
 
 
 def check_policy_passrole_overly_permissive(policy, policy_doc):
+    print('Checking for IAM policies that allow an overly permissive passrole...')
     """Check that policy does not allow PassRole to pass roles for any service.
     If it did, an IAM identity with this policy could grant extra permissions
     to any service, posing major security risk"""
@@ -359,27 +396,26 @@ def check_policy_passrole_overly_permissive(policy, policy_doc):
 
         policy_warnings[policy['PolicyName']].append(
                     {
-"Warning" : """
-    iam:PassRole overly permissive
-""",
-"Explanation" : """
-    Any IAM identity (i.e. users, groups, or roles) 
-    with this policy can assign roles to an instance
-    of any resource.
+"Warning" : 
+"""iam:PassRole overly permissive"""
+,
+"Explanation" : 
+"""Any IAM identity (i.e. users, groups, or roles) 
+with this policy can assign roles to an instance
+of any resource.
 
-    As such, this policy can be exploited to grant
-    unintended permissions to any resource.
-    
-    More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
-""",
-"Recommendation": """
-    If you want iam:PassRole to be permitted:
-    - Specify resource ARNs explicitly in 'Resource'
-    - Add the iam:PassedToService condition key to the statement
-    
-    If you do not want iam:PassRole to be permitted:
-    - Specify iam actions explicitly in 'Action'
-"""
+As such, this policy can be exploited to grant
+unintended permissions to any resource.
+
+More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html"""
+,
+"Recommendation": 
+"""If you want iam:PassRole to be permitted:
+- Specify resource ARNs explicitly in 'Resource'
+- Add the iam:PassedToService condition key to the statement
+
+If you do not want iam:PassRole to be permitted:
+- Specify iam actions explicitly in 'Action'"""
                     }
         )
 
@@ -419,7 +455,10 @@ def write_analysis_to_file(file_format):
     '''Write warnings and recommendations to a log file\n
     Parameters: file format\n
     Returns: filepath of written file'''
-
+    
+    if file_format == 'txt':
+        dict_printer(policy_warnings, 'txt')
+    return f'{filestem}.{file_format}'
 
     filepath = 'logs/iam_report.txt'
     if file_format == 'txt':

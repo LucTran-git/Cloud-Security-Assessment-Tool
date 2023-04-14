@@ -23,24 +23,30 @@ secretAccessKey = credsData['AWS']['secret_access_key']
 
 session = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 
-# populate services clients
+print('Populating service clients...')
+
+print('Acquiring iam client...')
 clients = {}
 clients['iam'] = session.client('iam')
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 #1.since an account can have multiple instances in different regions, get a list of regions where the service is available
+print('Acquiring ec2 available regions...')
 ec2_regions = []
 for regionName in session.get_available_regions('ec2'):
     try:
+        print('Getting region...')
         ec2_clientTMP = session.client('ec2', region_name=regionName)
         ec2_clientTMP.describe_instances()
         ec2_regions.append(regionName)
     except botocore.exceptions.ClientError as e:
-        #print(f"region unavailable: {regionName}: {str(e)}")
+        print(f"region unavailable: {regionName}: {str(e)}")
         pass
 
 #2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
+print('Creating list of ec2 clients...')
 ec2_clients_List = []
+
 
 for i in range(len(ec2_regions)):
     ec2_clients_List.append(session.client('ec2', ec2_regions[i]))
