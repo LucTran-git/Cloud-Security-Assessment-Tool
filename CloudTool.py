@@ -13,7 +13,7 @@ class jsonHelper(json.JSONEncoder):
         return super().default(obj)
 
 
-
+#rghdft
 
 #Check if Creds Credentials.json has access keys and if it doesn't, ask them for it and store values in Credentials.json
 with open('Credentials.json', 'r') as credsFile:
