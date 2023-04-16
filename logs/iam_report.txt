@@ -1,31 +1,342 @@
------ Policy Name: test -----
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "iam:*",
-            "Resource": "*"
-        }
-    ]
-}
-                        
-| Warning |
-    iam:PassRole overly permissive
-| Explanation |
-    Any IAM identity (i.e. users, groups, or roles) 
-    with this policy can assign roles to an instance
-    of any resource.
+Warning Category: Unused EC2 Security Group
+    1)
+        WARNING:
+            Unused EC2 security group ID: sg-0213965d8e9a13115
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
 
-    As such, this policy can be exploited to grant
-    unintended permissions to any resource.
-    
-    More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
-| Recommendation |
-    If you want iam:PassRole to be permitted:
-    - Specify resource ARNs explicitly in 'Resource'
-    - Add the iam:PassedToService condition key to the statement
-    
-    If you do not want iam:PassRole to be permitted:
-    - Specify iam actions explicitly in 'Action'
+    2)
+        WARNING:
+            Unused EC2 security group ID: sg-0066e5e5fd70748b7
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    3)
+        WARNING:
+            Unused EC2 security group ID: sg-0b361f2ffe9f40d0e
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    4)
+        WARNING:
+            Unused EC2 security group ID: sg-02e1fd6c1300e4f24
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    5)
+        WARNING:
+            Unused EC2 security group ID: sg-098ff847fb664c4fb
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    6)
+        WARNING:
+            Unused EC2 security group ID: sg-0c15406f0931a1cbd
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    7)
+        WARNING:
+            Unused EC2 security group ID: sg-0d600cb5cd5e2c7b6
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    8)
+        WARNING:
+            Unused EC2 security group ID: sg-07547763641738b55
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    9)
+        WARNING:
+            Unused EC2 security group ID: sg-059c3a93f5fff2f61
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    10)
+        WARNING:
+            Unused EC2 security group ID: sg-038c018add4750c69
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    11)
+        WARNING:
+            Unused EC2 security group ID: sg-00d76fe725185234a
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    12)
+        WARNING:
+            Unused EC2 security group ID: sg-086d56dc329273c08
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    13)
+        WARNING:
+            Unused EC2 security group ID: sg-0095f6b5b7b4d4cd8
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    14)
+        WARNING:
+            Unused EC2 security group ID: sg-05bad966cdd11e3cd
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    15)
+        WARNING:
+            Unused EC2 security group ID: sg-0963bfc28b0daf89b
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    16)
+        WARNING:
+            Unused EC2 security group ID: sg-0c96c9ad9d6b86d87
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+    17)
+        WARNING:
+            Unused EC2 security group ID: sg-0a1682b3992edc175
+        EXPLANATION:
+            Unused EC2 security groups Increase the difficulty of managing security groups efficiently
+        RECOMMENDATION:
+            Regularly monitor and remove unused security groups to reduce the attack surface of your infrastructure.
+
+Warning Category: Allow All Outbound Ports
+    18)
+        WARNING:
+            Security group sg-0213965d8e9a13115 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    19)
+        WARNING:
+            Security group sg-0066e5e5fd70748b7 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    20)
+        WARNING:
+            Security group sg-0b361f2ffe9f40d0e allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    21)
+        WARNING:
+            Security group sg-02e1fd6c1300e4f24 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    22)
+        WARNING:
+            Security group sg-098ff847fb664c4fb allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    23)
+        WARNING:
+            Security group sg-0c15406f0931a1cbd allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    24)
+        WARNING:
+            Security group sg-0d600cb5cd5e2c7b6 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    25)
+        WARNING:
+            Security group sg-07547763641738b55 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    26)
+        WARNING:
+            Security group sg-059c3a93f5fff2f61 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    27)
+        WARNING:
+            Security group sg-038c018add4750c69 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    28)
+        WARNING:
+            Security group sg-00d76fe725185234a allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    29)
+        WARNING:
+            Security group sg-086d56dc329273c08 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    30)
+        WARNING:
+            Security group sg-0095f6b5b7b4d4cd8 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    31)
+        WARNING:
+            Security group sg-05bad966cdd11e3cd allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    32)
+        WARNING:
+            Security group sg-0963bfc28b0daf89b allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    33)
+        WARNING:
+            Security group sg-07d5d1975fa544603 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    34)
+        WARNING:
+            Security group sg-0c96c9ad9d6b86d87 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+    35)
+        WARNING:
+            Security group sg-0a1682b3992edc175 allows outbound traffic on all ports
+        EXPLANATION:
+            Allowing outbound traffic on all ports may cause security vulnerabilities
+        RECOMMENDATION:
+            Update the security group's outbound rules to limit traffic to only necessary ports
+
+Warning Category: IAM Role Association
+    36)
+        WARNING:
+            IAM role not attached to EC2 instance ID: i-0697b4b9583f648bd
+        EXPLANATION:
+            EC2 instances should use an IAM role instead of hard-coded AWS credentials
+        RECOMMENDATION:
+            Attach an IAM role to the EC2 instance using the EC2 console or the AWS CLI
+
+Warning Category: Security group created by launch wizard 
+    37)
+        WARNING:
+            Security group sg-07d5d1975fa544603 in use was created by the launch wizard
+        EXPLANATION:
+            Security groups created by the launch wizard may cause vulnerabilities due to their low level of configuration
+        RECOMMENDATION:
+            Review and modify the security group settings or create a separate security group
+
+Warning Category: test
+    38)
+        WARNING:
+            iam:PassRole overly permissive
+        EXPLANATION:
+            Any IAM identity (i.e. users, groups, or roles) 
+            with this policy can assign roles to an instance
+            of any resource.
+            
+            As such, this policy can be exploited to grant
+            unintended permissions to any resource.
+            
+            More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+        RECOMMENDATION:
+            If you want iam:PassRole to be permitted:
+            - Specify resource ARNs explicitly in 'Resource'
+            - Add the iam:PassedToService condition key to the statement
+            
+            If you do not want iam:PassRole to be permitted:
+            - Specify iam actions explicitly in 'Action'
+
+Warning Category: test
+    39)
+        WARNING:
+            iam:PassRole overly permissive
+        EXPLANATION:
+            Any IAM identity (i.e. users, groups, or roles) 
+            with this policy can assign roles to an instance
+            of any resource.
+            
+            As such, this policy can be exploited to grant
+            unintended permissions to any resource.
+            
+            More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+        RECOMMENDATION:
+            If you want iam:PassRole to be permitted:
+            - Specify resource ARNs explicitly in 'Resource'
+            - Add the iam:PassedToService condition key to the statement
+            
+            If you do not want iam:PassRole to be permitted:
+            - Specify iam actions explicitly in 'Action'
+
