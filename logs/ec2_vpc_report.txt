@@ -12,12 +12,6 @@
 | Explanation | EBS volumes should be encrypted to protect data confidentiality
 | Recommendation | Encrypt the EBS volume using the EC2 console or the AWS CLI
 
------ Check Name: VPCs Open for Oracle -----
-
-| Warning | Open Oracle port (1521) found in security group sg-081d19bfff2c81456 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Oracle should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Oracle to a trusted set of IP addresses or VPN
-
 ----- Check Name: EC2 EBS Backup -----
 
 | Warning | EBS volume vol-02ca7209914f48938 for EC2 instance i-08121e25f4d1aeb6c in region us-east-1 has no backup enabled
@@ -35,7 +29,6 @@
 | Warning | EBS volume vol-0424ea44eb0a160d1 for EC2 instance i-0d85f975ecee2c083 in region us-east-1 has no backup enabled
 | Explanation | EBS volumes backups are critical to ensure data durability and availability
 | Recommendation | Enable EBS backups using the EC2 console or the AWS CLI
-
 ----- Check Name: Wide Open Ingress Rule in Security Groups -----
 
 | Warning | Wide open ingress rule found in security group sg-02688dbb2c4a928cf in region us-east-1
@@ -43,6 +36,54 @@
 | Recommendation | Update the security group rules to restrict access to only the necessary ports and IP ranges
 
 ----- Check Name:  EC2 instances with public IP addresses -----
+
+| Warning | EC2 instance i-044c5dfa2ef8dd029 in region us-east-1 has a public IP address
+| Explanation | Exposing EC2 instances to the internet with public IP addresses can increase security risks
+| Recommendation | Consider using a bastion host or a VPN connection to securely access EC2 instances without public IP addresses
+
+----- Check Name: Unassociated EIPs -----
+
+| Warning | Unassociated EIP 3.229.240.66 in region us-east-1
+| Explanation | Unassociated EIPs can cause billing issues and should be released if not needed
+| Recommendation | Release the unassociated EIP 3.229.240.66 using the EC2 console or the AWS CLI
+
+----- Check Name: Excessive security group rules -----
+
+| Warning | Excessive security group rules found in security group sg-02688dbb2c4a928cf in region us-east-1
+| Explanation | Security groups with excessive rules can lead to increased security risks and difficulties in management
+| Recommendation | Simplify the security group rules by consolidating overlapping rules, or consider using AWS Network Firewall
+
+----- Check Name: EC2 instances using key-based login -----
+
+| Warning | EC2 instance i-08121e25f4d1aeb6c in region us-east-1 uses key-based login
+| Explanation | Key-based login can be less secure than other authentication methods
+| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
+
+| Warning | EC2 instance i-05e088c8b13cd91ea in region us-east-1 uses key-based login
+| Explanation | Key-based login can be less secure than other authentication methods
+| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
+
+| Warning | EC2 instance i-00b5cddfe13e8c77e in region us-east-1 uses key-based login
+| Explanation | Key-based login can be less secure than other authentication methods
+| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
+
+----- Check Name: EC2 Unused EBS Volumes -----
+
+| Warning | Unused EBS volume vol-02ca7209914f48938 in region us-east-1
+| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
+| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
+
+| Warning | Unused EBS volume vol-0ff11bdf520d509fa in region us-east-1
+| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
+| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
+
+| Warning | Unused EBS volume vol-0424ea44eb0a160d1 in region us-east-1
+| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
+| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
+
+| Warning | Unused EBS volume vol-074259eaffcca1f50 in region us-east-1
+| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
+| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
 
 ----- Check Name: unused Virtual Private Gateways -----
 
@@ -122,13 +163,175 @@
 | Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
 | Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
 
------ Check Name: Unassociated EIPs -----
+----- Check Name: VPC Firewalls -----
 
------ Check Name: Excessive security group rules -----
+| Warning | Security group OpenRPC in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
 
-| Warning | Excessive security group rules found in security group sg-02688dbb2c4a928cf in region us-east-1
-| Explanation | Security groups with excessive rules can lead to increased security risks and difficulties in management
-| Recommendation | Simplify the security group rules by consolidating overlapping rules, or consider using AWS Network Firewall
+| Warning | Security group Open Memcached in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenHadoopHDFSNameNodeWebUI in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenOracleAutoDataWarehouse in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open Cassandra Thrift in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenKibana in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenSMTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenPostgreSQL in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenMongoDB in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open SNMP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenFTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group CloudProjSecGroup4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenRDP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenCassandraClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open LDAP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group launch-wizard-2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenTelnet in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenSQLServer in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenSSH in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open VNC Server in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open Internal Web in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open Redis in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenDocker in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenCIFS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenCassandraInternode in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenVNCClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenOracle in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open LDAPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group launch-wizard-4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open Cassandra Monitoring in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group launch-wizard-1 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group CloudProjSecGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open HTTPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group Open HTTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group launch-wizard-3 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenSalt in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenNetBIOS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group launch-wizard-6 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group OpenSMBoTCP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+
+| Warning | Security group my-security-group in VPC vpc-099367eebebf9060d allows traffic from all IPs
+| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
+| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
 
 ----- Check Name: Network ACL without tags -----
 
@@ -608,189 +811,11 @@
 | Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
 | Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
 
------ Check Name: EC2 instances using key-based login -----
+----- Check Name: VPCs Open for Oracle -----
 
-| Warning | EC2 instance i-08121e25f4d1aeb6c in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
-| Warning | EC2 instance i-05e088c8b13cd91ea in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
-| Warning | EC2 instance i-00b5cddfe13e8c77e in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
------ Check Name: VPC Firewalls -----
-
-| Warning | Security group OpenRPC in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Memcached in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenHadoopHDFSNameNodeWebUI in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenOracleAutoDataWarehouse in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Cassandra Thrift in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenKibana in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSMTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenPostgreSQL in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenMongoDB in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open SNMP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenFTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjSecGroup4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenRDP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCassandraClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open LDAP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenTelnet in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSQLServer in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSSH in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open VNC Server in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Internal Web in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Redis in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenDocker in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCIFS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCassandraInternode in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenVNCClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenOracle in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open LDAPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Cassandra Monitoring in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-1 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjSecGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open HTTPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open HTTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-3 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSalt in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenNetBIOS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-6 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSMBoTCP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group my-security-group in VPC vpc-099367eebebf9060d allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+| Warning | Open Oracle port (1521) found in security group sg-081d19bfff2c81456 of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | Oracle should not be open to the internet as it is a security risk
+| Recommendation | Restrict access to Oracle to a trusted set of IP addresses or VPN
 
 ----- Check Name: VPC Open MySQL Ports -----
 
@@ -1022,3 +1047,236 @@
 | Explanation | HTTPS should not be open to the internet as it is a security risk
 | Recommendation | Restrict access to HTTPS to a trusted set of IP addresses or VPN
 
+----- Check Name: Unused Security Groups -----
+
+| Warning | Unused security group sg-070ae5286b0ffb7c7 in region ap-south-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0fb88cbff36e694ed in region eu-north-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-05f8696edbc60d836 in region eu-west-3
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0f3e662df65b3e0fc in region eu-west-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-00f1cbc0903d65fb4 in region eu-west-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-09ef638cdc071f9d9 in region ap-northeast-3
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0ae5316bb6cc56771 in region ap-northeast-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-05ca5c844eceaa81d in region ap-northeast-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0eb9e1e878c80ffe6 in region ca-central-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0de2d2ee53bfd214c in region sa-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0b42be8a1a89f5951 in region ap-southeast-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-04502e4ea67ef474b in region ap-southeast-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0b75af2115db29e89 in region eu-central-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0db69aef5cda69eda in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-039ad91ec2435df66 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-005d3ed1fe869afee in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-09bc54e35575e7bca in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0a2ffaa24c9b3b9e2 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0485f8925245d93b6 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-05e847342bae470bd in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-061fbdd9bcfb3121a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0af58ca778ea3a990 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0e1f48e619364783a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0bc38bae2b0358f19 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-041cf62e043f2e4b8 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-09d54d58ad61e999f in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-06f527e6b6331c2c5 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0b84b065e60fcb69c in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-06275f3284635685e in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-06614001dc4ae89a1 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-075bb6e575fc280e2 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-050d1a6d5ee232579 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0fb6ed3f9af7852fe in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0a00c6419206fb91a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-03aebc51c5d6f164f in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-02bf6e24c1fbba64a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-02d07613b78f1bca9 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0cfdf612d5d3394ac in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0975dd850786d7fe9 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0d242b6ecd9bded14 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0ca79d93944756d8a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-03f5e4e40866a610a in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0dcf940797d432545 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0cd9491233da2f029 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-081d19bfff2c81456 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-071b776d3053acb15 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0f45e4461d7211df0 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0e5f341255a137481 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-02688dbb2c4a928cf in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0fa527b7378b4c0fd in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-07824c88ec64e8cf6 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-08535810994be2232 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0b7910a66929e74e7 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0541241f38601ab14 in region us-east-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-08b2fbc6a340bbd32 in region us-east-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0f3ab9583619057e3 in region us-west-1
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-0df17ca06c4dc36eb in region us-west-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+
+| Warning | Unused security group sg-00fae4c0a65eb2f09 in region us-west-2
+| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
+| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
