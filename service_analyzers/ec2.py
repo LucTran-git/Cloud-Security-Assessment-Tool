@@ -22,7 +22,6 @@ policy_warnings = {} # dict of (list of dicts)
 
 def check_EC2_VPC_configurations(ec2_clients):
 
-
     # Define the check_EC2_EBS_volumes function
     def check_EC2_EBS_volumes(ec2_clients):
         warnings = []
@@ -95,137 +94,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                         warnings.append(warning)
         EC2_VPC_outputs("Wide Open Ingress Rule in Security Groups", warnings)
 
-    # Define the check_VPC_NAT_Gateways function
-    def check_VPC_NAT_Gateways(ec2_clients):
-        warnings = []
-        # Get a list of all VPC regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-
-        # Check for NAT Gateways in each region
-        for region in regions:
-            print(f"Checking NAT Gateways in {region}...")
-            ec2_client = boto3.client('ec2', region_name=region)
-
-            nat_gateways = ec2_client.describe_nat_gateways()['NatGateways']
-
-            for nat_gateway in nat_gateways:
-                if 'SubnetMappings' not in nat_gateway:
-                    # NAT gateway has no subnet associations, skip it
-                    continue
-
-                public_subnet_ids = [nat_gateway_assoc['SubnetId'] for nat_gateway_assoc in
-                                     nat_gateway['SubnetMappings'] if
-                                     nat_gateway_assoc['NatGatewayId'] == nat_gateway['NatGatewayId'] and
-                                     nat_gateway_assoc['SubnetPublicIp'] != None]
-                private_subnet_ids = [nat_gateway_assoc['SubnetId'] for nat_gateway_assoc in
-                                      nat_gateway['SubnetMappings'] if
-                                      nat_gateway_assoc['NatGatewayId'] == nat_gateway['NatGatewayId'] and
-                                      nat_gateway_assoc['SubnetPublicIp'] == None]
-
-                if len(public_subnet_ids) > 0 and len(private_subnet_ids) == 0:
-                    warning = {
-                        "warning": f"Found NAT Gateway {nat_gateway['NatGatewayId']} in region {region} with a public subnet but no corresponding private subnet",
-                        "explanation": "Having a public subnet without a corresponding private subnet can expose resources to the public internet",
-                        "recommendation": f"Create a private subnet in the same Availability Zone as the public subnet and associate the NAT Gateway with it"
-                    }
-
-                    warnings.append(warning)
-
-        EC2_VPC_outputs("VPC NAT Gateways", warnings)
-
-    # Define the check_vpc_endpoint_exposure function
-    def check_vpc_endpoint_exposure(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking VPC endpoint exposure in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all VPCs in the current region
-            response = ec2.describe_vpcs()
-            for vpc in response['Vpcs']:
-                vpc_id = vpc['VpcId']
-                # Check if VPC has any endpoints
-                if 'EndpointServiceNames' in vpc:
-                    for service_name in vpc['EndpointServiceNames']:
-                        # Check if the endpoint service is exposed to the internet
-                        endpoint_service = boto3.client('ec2', region_name=region)
-                        endpoint_service_response = endpoint_service.describe_vpc_endpoint_services(
-                            ServiceNames=[service_name])
-                        if endpoint_service_response['ServiceDetails'][0]['ServiceType'] == 'Interface' and \
-                                endpoint_service_response['ServiceDetails'][0]['AvailabilityZones']:
-                            warning = {
-                                "warning": f"VPC endpoint service {service_name} in VPC {vpc_id} in region {region} is exposed to the internet",
-                                "explanation": "Exposing VPC endpoints to the internet can lead to security vulnerabilities",
-                                "recommendation": "Configure the endpoint to not be exposed to the internet using the VPC console or the AWS CLI"}
-                            warnings.append(warning)
-        EC2_VPC_outputs("VPC endpoint Exposure", warnings)
-
-    # Define the check_unused_amis function
-    def check_unused_amis(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-
-        for region in regions:
-            ec2 = boto3.resource('ec2', region_name=region)
-            instances = ec2.instances.all()
-            amis = ec2.images.filter(Owners=['self'])
-
-            unused_amis = set([ami.id for ami in amis])
-
-            for instance in instances:
-                if instance.state['Name'] != 'terminated':
-                    name = None
-                    if instance.tags:
-                        for tag in instance.tags:
-                            if tag['Key'] == 'Name':
-                                name = tag['Value']
-
-                    for bdm in instance.block_device_mappings:
-                        if 'Ebs' in bdm:
-                            vol_id = bdm['Ebs']['VolumeId']
-                            vol = ec2.Volume(vol_id)
-                            attached_ami = vol.attachments[0]['InstanceId']
-
-                            if attached_ami in unused_amis:
-                                unused_amis.remove(attached_ami)
-
-                    if name is None:
-                        name = instance.id
-
-            for ami in unused_amis:
-                warning = {"warning": f"Unused Amazon Machine Image {ami} in region {region}",
-                           "explanation": "Unused AMIs can take up storage space and increase costs",
-                           "recommendation": "Deregister the unused AMI using the EC2 console or the AWS CLI"}
-                warnings.append(warning)
-
-        EC2_VPC_outputs("unused Amazon Machine Images (AMIs)", warnings)
-
-    # Define the check_unused_vpc_igws function
-    def check_unused_vpc_igws(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking unused VPC Internet Gateways in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all VPCs in the current region
-            response = ec2.describe_vpcs()
-            # Check if the VPC has an unused Internet Gateway
-            for vpc in response['Vpcs']:
-                vpc_id = vpc['VpcId']
-                # Retrieve information about all Internet Gateways attached to the VPC
-                igw_response = ec2.describe_internet_gateways(
-                    Filters=[{'Name': 'attachment.vpc-id', 'Values': [vpc_id]}])
-                # Check if any Internet Gateway is not attached to any instance
-                for igw in igw_response['InternetGateways']:
-                    if len(igw['Attachments']) == 0:
-                        warning = {
-                            "warning": f"Unused VPC Internet Gateway {igw['InternetGatewayId']} in VPC {vpc_id} and region {region}",
-                            "explanation": "Unused Internet Gateways can be a security risk as they may allow unauthorized access to the VPC",
-                            "recommendation": "Delete the unused Internet Gateway using the EC2 console or the AWS CLI"}
-                        warnings.append(warning)
-        EC2_VPC_outputs("unused VPC Internet Gateways", warnings)
-
     # Define the check_EC2_public_ips function
     def check_EC2_public_ips(ec2_clients):
         warnings = []
@@ -272,24 +140,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                "recommendation": "Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI"}
                     warnings.append(warning)
         EC2_VPC_outputs("unused Virtual Private Gateways", warnings)
-
-    # Define the check_ec2_elastic_ip_limits function
-    def check_ec2_elastic_ip_limits(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking Elastic IP Limits in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            response = ec2.describe_account_attributes(AttributeNames=['max-elastic-ips'])
-            max_elastic_ips = int(response['AccountAttributes'][0]['AttributeValues'][0]['AttributeValue'])
-            elastic_ips = ec2.describe_addresses()
-            num_elastic_ips = len(elastic_ips['Addresses'])
-            if num_elastic_ips >= max_elastic_ips:
-                warning = {"warning": f"Elastic IP limit reached in {region}",
-                           "explanation": "Elastic IP addresses are limited per region and exceeding the limit can lead to additional charges",
-                           "recommendation": "Release unused Elastic IP addresses or request an increase in the limit"}
-                warnings.append(warning)
-        EC2_VPC_outputs("EC2 Elastic IP Limits", warnings)
 
     # Define the check_unassociated_eips function
     def check_unassociated_eips(ec2_clients):
@@ -453,79 +303,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                     warnings.append(warning)
         EC2_VPC_outputs("VPC Firewalls", warnings)
 
-    # Define the check_EC2_instance_limit function
-    def check_EC2_instance_limit(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking EC2 instance limit in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about the account's current usage and limits for EC2 instances
-            response = ec2.describe_account_attributes(AttributeNames=['max-instances'])
-            # Check if the number of instances is close to the per-account limit
-            for attribute in response['AccountAttributes']:
-                if attribute['AttributeName'] == 'max-instances':
-                    max_instances = int(attribute['AttributeValues'][0]['AttributeValue'])
-                    instances = ec2.describe_instances()
-                    num_instances = len(instances['Reservations'])
-                    if num_instances >= 0.95 * max_instances:
-                        warning = {"warning": f"EC2 instance limit in {region} is close to the AWS per-account limit",
-                                   "explanation": "If you reach the per-account limit, you may not be able to launch more instances.",
-                                   "recommendation": "Consider stopping or terminating any unused instances or request a limit increase."}
-                        warnings.append(warning)
-        EC2_VPC_outputs("EC2 instance limit", warnings)
-
-    # Define the function to check vCPU On-Demand Based Limits
-    def check_ec2_vcpu_limits(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking vCPU On-Demand Based Limits in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Get the limits for the region
-            try:
-                limits = ec2.describe_account_attributes(AttributeNames=['vcpu-limit'])
-            except ec2.exceptions.InvalidParameter as e:
-                print(f"Skipping region {region} due to error: {e}")
-                continue
-            # Check if the limit is exceeded
-            for limit in limits['AccountAttributes']:
-                if limit['AttributeName'] == 'vcpu-limit':
-                    # Get the current usage and the limit
-                    current_usage = int(limit['AttributeValues'][0]['AttributeValue'])
-                    account_limit = int(limit['AttributeValues'][1]['AttributeValue'])
-                    # Check if the current usage is close to the limit (95%)
-                    if current_usage >= 0.95 * account_limit:
-                        warning = {"warning": f"vCPU On-Demand Based Limits exceeded in region {region}",
-                                   "explanation": "You are using a significant portion of your account's vCPU On-Demand Based Limits, which may impact your ability to launch new instances",
-                                   "recommendation": "Consider optimizing your usage or contact AWS support to request a limit increase"}
-                        warnings.append(warning)
-        EC2_VPC_outputs("EC2 vCPU On-Demand Based Limits", warnings)
-
-    # Define the check_EC2_max_instances function
-    def check_EC2_max_instances(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking max EC2 instances in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Get the max number of instances allowed in the region
-            limits = ec2.describe_account_attributes(AttributeNames=['max-instances'])
-            max_instances = int(limits['AccountAttributes'][0]['AttributeValues'][0]['AttributeValue'])
-            # Get the current number of instances in the region
-            instances = ec2.describe_instances()
-            num_instances = len([i for r in instances['Reservations'] for i in r['Instances']])
-            # Check if the current number of instances exceeds the max allowed
-            if num_instances >= max_instances:
-                warning = {"warning": f"Max EC2 instance limit exceeded in region {region}",
-                           "explanation": f"The maximum number of allowed instances in region {region} is {max_instances}.",
-                           "recommendation": "Reduce the number of running instances or request a limit increase."}
-                warnings.append(warning)
-        EC2_VPC_outputs("EC2 Max Instances", warnings)
-
     # Define the check_vpc_open_mysql function
     def check_vpc_open_mysql(ec2_clients):
         warnings = []
@@ -547,7 +324,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                 "recommendation": "Restrict the security group to only allow MySQL traffic from trusted sources"}
                             warnings.append(warning)
         EC2_VPC_outputs("VPC Open MySQL Ports", warnings)
-
 
     # Define the check_vpc_open_oracle function
     def check_vpc_open_oracle(ec2_clients):
@@ -755,31 +531,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                 "recommendation": "Restrict access to CIFS to a trusted set of IP addresses or VPN"}
                             warnings.append(warning)
         EC2_VPC_outputs("VPCs Open for CIFS", warnings)
-
-    # Define the check_vpc_open_all_ports function
-    def check_vpc_open_all_ports(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking VPCs Open All Ports in {region}...")
-            ec2 = boto3.resource('ec2', region_name=region)
-            # Retrieve all VPCs in the current region
-            vpcs = list(ec2.vpcs.all())
-            for vpc in vpcs:
-                # Check if the VPC has a security group rule open to the internet for all ports and protocols
-                for sg in vpc.security_groups.all():
-                    for ip_permission in sg.ip_permissions:
-                        if ip_permission.get('IpRanges') is not None and ip_permission.get('IpRanges')[0].get(
-                                'CidrIp') == '0.0.0.0/0' and \
-                                ip_permission.get('IpProtocol') == '-1' and \
-                                ip_permission.get('FromPort') is None and ip_permission.get('ToPort') is None:
-                            warning = {
-                                "warning": f"All ports and protocols are open in security group {sg.group_id} of VPC {vpc.id} in region {region}",
-                                "explanation": "Opening all ports and protocols to the internet is a serious security risk",
-                                "recommendation": "Restrict access to only the necessary ports and protocols to minimize the attack surface"}
-                            warnings.append(warning)
-        EC2_VPC_outputs("VPCs Open for All Ports and Protocols", warnings)
 
     # Define the check_vpc_open_rdp function
     def check_vpc_open_rdp(ec2_clients):
@@ -1009,28 +760,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                             warnings.append(warning)
         EC2_VPC_outputs("VPCs Open for VNC Server", warnings)
 
-    # Define the check_vpc_open_elasticsearch function
-    def check_vpc_open_elasticsearch(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking VPCs Open for Elasticsearch in {region}...")
-            es = boto3.client('es', region_name=region)
-            domains = es.list_domain_names()['DomainNames']
-            for domain in domains:
-                try:
-                    es_info = es.describe_elasticsearch_domain(DomainName=domain)
-                    if es_info['DomainStatus']['Endpoint'] and es_info['DomainStatus']['Endpoint'].startswith(
-                            'https://'):
-                        warning = {
-                            "warning": f"Open Elasticsearch found in domain {domain} in region {region}",
-                            "explanation": "Elasticsearch should not be open to the internet as it is a security risk",
-                            "recommendation": "Restrict access to Elasticsearch to a trusted set of IP addresses or VPN"}
-                        warnings.append(warning)
-                except:
-                    pass
-        EC2_VPC_outputs("VPCs Open for Elasticsearch", warnings)
-
     # Define the check_vpc_open_mongodb function
     def check_vpc_open_mongodb(ec2_clients):
         warnings = []
@@ -1220,27 +949,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                             warnings.append(warning)
         EC2_VPC_outputs("VPCs Open for Memcached", warnings)
 
-    # Define the check_vpc_open_internal_web function
-    def check_vpc_open_internal_web(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking VPCs Open for Internal Web Traffic in {region}...")
-            ec2 = boto3.resource('ec2', region_name=region)
-            vpcs = list(ec2.vpcs.all())
-            for vpc in vpcs:
-                for sg in vpc.security_groups.all():
-                    for ip_permission in sg.ip_permissions:
-                        if (ip_permission.get('FromPort') == 80 and ip_permission.get('IpProtocol') == 'tcp' and
-                                ip_permission.get('IpRanges') is None and ip_permission.get(
-                                    'UserIdGroupPairs') is not None):
-                            warning = {
-                                "warning": f"Open Internal Web traffic (port 80) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
-                                "explanation": "Exposing internal web services to the internet could lead to security vulnerabilities and data leaks",
-                                "recommendation": "Limit access to internal web services by using specific IP addresses or CIDR ranges in security group rules"}
-                            warnings.append(warning)
-        EC2_VPC_outputs("VPCs Open for Internal Web Traffic", warnings)
-
     # Define the check_vpc_open_redis function
     def check_vpc_open_redis(ec2_clients):
         warnings = []
@@ -1304,21 +1012,68 @@ def check_EC2_VPC_configurations(ec2_clients):
                             warnings.append(warning)
         EC2_VPC_outputs("VPCs Open for HTTPS", warnings)
 
-    # Call the functions and populate the policy_warnings dictionary
+    # Define the check_unused_security_groups function
+    def check_unused_security_groups(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking unused security groups in {region}...")
+            ec2 = boto3.client('ec2', region_name=region)
+            # Get a list of all security groups in the current region
+            security_groups = ec2.describe_security_groups()['SecurityGroups']
+            # Retrieve information about all running instances in the current region
+            instances = ec2.describe_instances()
+            # Create a set of all security group IDs associated with running instances
+            instance_sgs = set()
+            for reservation in instances['Reservations']:
+                for instance in reservation['Instances']:
+                    for sg in instance['SecurityGroups']:
+                        instance_sgs.add(sg['GroupId'])
+            # Check if any security groups are unused
+            for sg in security_groups:
+                if sg['GroupId'] not in instance_sgs:
+                    warning = {"warning": f"Unused security group {sg['GroupId']} in region {region}",
+                               "explanation": "Unused security groups are a potential security risk as they may allow unauthorized access to instances",
+                               "recommendation": "Delete the unused security group using the EC2 console or the AWS CLI"}
+                    warnings.append(warning)
+        EC2_VPC_outputs("Unused Security Groups", warnings)
+
+    # Define the check_EC2_unused_EBS_volumes function
+    def check_EC2_unused_EBS_volumes(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking unused EBS volumes in {region}...")
+            ec2 = boto3.client('ec2', region_name=region)
+            # Retrieve information about all EBS volumes in the current region
+            response = ec2.describe_volumes()
+            # Check if the volume is not in use
+            for volume in response['Volumes']:
+                # Create a dictionary with information about the unused volume
+                if volume['State'] == 'available':
+                    volume_info = {"VolumeId": volume['VolumeId'], "State": volume['State'], "Region": region}
+                    warning = {"warning": f"Unused EBS volume {volume['VolumeId']} in region {region}",
+                               "explanation": "Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs",
+                               "recommendation": "Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI"}
+                    warnings.append(warning)
+        EC2_VPC_outputs("EC2 Unused EBS Volumes", warnings)
+
 
     check_EC2_EBS_volumes(ec2_clients)
-    check_vpc_open_oracle(ec2_clients)
     check_ec2_ebs_backup(ec2_clients)
     check_security_groups_ingress(ec2_clients)
     check_EC2_public_ips(ec2_clients)
-    check_unused_vpgs(ec2_clients)
     check_unassociated_eips(ec2_clients)
     check_EC2_excessive_security_groups(ec2_clients)
+    check_ec2_key_based_login(ec2_clients)
+    check_EC2_unused_EBS_volumes(ec2_clients)
+    check_unused_vpgs(ec2_clients)
+    check_VPC_firewalls(ec2_clients)
     check_network_acl_tags(ec2_clients)
     check_open_all_ports_egress(ec2_clients)
     check_open_dns(ec2_clients)
-    check_ec2_key_based_login(ec2_clients)
-    check_VPC_firewalls(ec2_clients)
+    check_vpc_open_oracle(ec2_clients)
     check_vpc_open_mysql(ec2_clients)
     check_vpc_open_netbios(ec2_clients)
     check_vpc_open_postgres(ec2_clients)
@@ -1350,27 +1105,7 @@ def check_EC2_VPC_configurations(ec2_clients):
     check_vpc_open_redis(ec2_clients)
     check_vpc_open_http(ec2_clients)
     check_vpc_open_https(ec2_clients)
-
-
-
-    #check_vpc_open_all_ports(ec2_clients)
-    # check_vpc_open_elasticsearch(ec2_clients)
-
-
-
-    # check_VPC_NAT_Gateways(ec2_clients)
-    # check_vpc_endpoint_exposure(ec2_clients)
-    # check_unused_amis(ec2_clients)
-    # check_unused_vpc_igws(ec2_clients)
-    # check_ec2_elastic_ip_limits(ec2_clients)
-
-    # check_ec2_vcpu_limits(ec2_clients)
-    # check_EC2_max_instances(ec2_clients)
-    # check_EC2_instance_limit(ec2_clients)
-
-
-
-
+    check_unused_security_groups(ec2_clients)
 
 
     # Print all warnings to a log file
