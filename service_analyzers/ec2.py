@@ -1,4 +1,5 @@
 import boto3
+from botocore.exceptions import ClientError
 import json
 import datetime
 import botocore
@@ -20,7 +21,6 @@ policy_warnings = {} # dict of (list of dicts)
 ###---------------------------------------------------EC2 & VPC SECTION----------------------------------------------------------------------
 
 def check_EC2_VPC_configurations(ec2_clients):
-
 
     # Define the check_EC2_EBS_volumes function
     def check_EC2_EBS_volumes(ec2_clients):
@@ -94,137 +94,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                         warnings.append(warning)
         EC2_VPC_outputs("Wide Open Ingress Rule in Security Groups", warnings)
 
-    # Define the check_VPC_NAT_Gateways function
-    def check_VPC_NAT_Gateways(ec2_clients):
-        warnings = []
-        # Get a list of all VPC regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-
-        # Check for NAT Gateways in each region
-        for region in regions:
-            print(f"Checking NAT Gateways in {region}...")
-            ec2_client = boto3.client('ec2', region_name=region)
-
-            nat_gateways = ec2_client.describe_nat_gateways()['NatGateways']
-
-            for nat_gateway in nat_gateways:
-                if 'SubnetMappings' not in nat_gateway:
-                    # NAT gateway has no subnet associations, skip it
-                    continue
-
-                public_subnet_ids = [nat_gateway_assoc['SubnetId'] for nat_gateway_assoc in
-                                     nat_gateway['SubnetMappings'] if
-                                     nat_gateway_assoc['NatGatewayId'] == nat_gateway['NatGatewayId'] and
-                                     nat_gateway_assoc['SubnetPublicIp'] != None]
-                private_subnet_ids = [nat_gateway_assoc['SubnetId'] for nat_gateway_assoc in
-                                      nat_gateway['SubnetMappings'] if
-                                      nat_gateway_assoc['NatGatewayId'] == nat_gateway['NatGatewayId'] and
-                                      nat_gateway_assoc['SubnetPublicIp'] == None]
-
-                if len(public_subnet_ids) > 0 and len(private_subnet_ids) == 0:
-                    warning = {
-                        "warning": f"Found NAT Gateway {nat_gateway['NatGatewayId']} in region {region} with a public subnet but no corresponding private subnet",
-                        "explanation": "Having a public subnet without a corresponding private subnet can expose resources to the public internet",
-                        "recommendation": f"Create a private subnet in the same Availability Zone as the public subnet and associate the NAT Gateway with it"
-                    }
-
-                    warnings.append(warning)
-
-        EC2_VPC_outputs("VPC NAT Gateways", warnings)
-
-    # Define the check_vpc_endpoint_exposure function
-    def check_vpc_endpoint_exposure(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking VPC endpoint exposure in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all VPCs in the current region
-            response = ec2.describe_vpcs()
-            for vpc in response['Vpcs']:
-                vpc_id = vpc['VpcId']
-                # Check if VPC has any endpoints
-                if 'EndpointServiceNames' in vpc:
-                    for service_name in vpc['EndpointServiceNames']:
-                        # Check if the endpoint service is exposed to the internet
-                        endpoint_service = boto3.client('ec2', region_name=region)
-                        endpoint_service_response = endpoint_service.describe_vpc_endpoint_services(
-                            ServiceNames=[service_name])
-                        if endpoint_service_response['ServiceDetails'][0]['ServiceType'] == 'Interface' and \
-                                endpoint_service_response['ServiceDetails'][0]['AvailabilityZones']:
-                            warning = {
-                                "warning": f"VPC endpoint service {service_name} in VPC {vpc_id} in region {region} is exposed to the internet",
-                                "explanation": "Exposing VPC endpoints to the internet can lead to security vulnerabilities",
-                                "recommendation": "Configure the endpoint to not be exposed to the internet using the VPC console or the AWS CLI"}
-                            warnings.append(warning)
-        EC2_VPC_outputs("VPC endpoint Exposure", warnings)
-
-    # Define the check_unused_amis function
-    def check_unused_amis(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-
-        for region in regions:
-            ec2 = boto3.resource('ec2', region_name=region)
-            instances = ec2.instances.all()
-            amis = ec2.images.filter(Owners=['self'])
-
-            unused_amis = set([ami.id for ami in amis])
-
-            for instance in instances:
-                if instance.state['Name'] != 'terminated':
-                    name = None
-                    if instance.tags:
-                        for tag in instance.tags:
-                            if tag['Key'] == 'Name':
-                                name = tag['Value']
-
-                    for bdm in instance.block_device_mappings:
-                        if 'Ebs' in bdm:
-                            vol_id = bdm['Ebs']['VolumeId']
-                            vol = ec2.Volume(vol_id)
-                            attached_ami = vol.attachments[0]['InstanceId']
-
-                            if attached_ami in unused_amis:
-                                unused_amis.remove(attached_ami)
-
-                    if name is None:
-                        name = instance.id
-
-            for ami in unused_amis:
-                warning = {"warning": f"Unused Amazon Machine Image {ami} in region {region}",
-                           "explanation": "Unused AMIs can take up storage space and increase costs",
-                           "recommendation": "Deregister the unused AMI using the EC2 console or the AWS CLI"}
-                warnings.append(warning)
-
-        EC2_VPC_outputs("unused Amazon Machine Images (AMIs)", warnings)
-
-    # Define the check_unused_vpc_igws function
-    def check_unused_vpc_igws(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking unused VPC Internet Gateways in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all VPCs in the current region
-            response = ec2.describe_vpcs()
-            # Check if the VPC has an unused Internet Gateway
-            for vpc in response['Vpcs']:
-                vpc_id = vpc['VpcId']
-                # Retrieve information about all Internet Gateways attached to the VPC
-                igw_response = ec2.describe_internet_gateways(
-                    Filters=[{'Name': 'attachment.vpc-id', 'Values': [vpc_id]}])
-                # Check if any Internet Gateway is not attached to any instance
-                for igw in igw_response['InternetGateways']:
-                    if len(igw['Attachments']) == 0:
-                        warning = {
-                            "warning": f"Unused VPC Internet Gateway {igw['InternetGatewayId']} in VPC {vpc_id} and region {region}",
-                            "explanation": "Unused Internet Gateways can be a security risk as they may allow unauthorized access to the VPC",
-                            "recommendation": "Delete the unused Internet Gateway using the EC2 console or the AWS CLI"}
-                        warnings.append(warning)
-        EC2_VPC_outputs("unused VPC Internet Gateways", warnings)
-
     # Define the check_EC2_public_ips function
     def check_EC2_public_ips(ec2_clients):
         warnings = []
@@ -271,24 +140,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                "recommendation": "Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI"}
                     warnings.append(warning)
         EC2_VPC_outputs("unused Virtual Private Gateways", warnings)
-
-    # Define the check_ec2_elastic_ip_limits function
-    def check_ec2_elastic_ip_limits(ec2_clients):
-        warnings = []
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking Elastic IP Limits in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            response = ec2.describe_account_attributes(AttributeNames=['max-elastic-ips'])
-            max_elastic_ips = int(response['AccountAttributes'][0]['AttributeValues'][0]['AttributeValue'])
-            elastic_ips = ec2.describe_addresses()
-            num_elastic_ips = len(elastic_ips['Addresses'])
-            if num_elastic_ips >= max_elastic_ips:
-                warning = {"warning": f"Elastic IP limit reached in {region}",
-                           "explanation": "Elastic IP addresses are limited per region and exceeding the limit can lead to additional charges",
-                           "recommendation": "Release unused Elastic IP addresses or request an increase in the limit"}
-                warnings.append(warning)
-        EC2_VPC_outputs("EC2 Elastic IP Limits", warnings)
 
     # Define the check_unassociated_eips function
     def check_unassociated_eips(ec2_clients):
@@ -397,33 +248,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                     warnings.append(warning)
         EC2_VPC_outputs("Open DNS in VPCs", warnings)
 
-    # Define the check_open_CIFS function
-    def check_open_CIFS(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking open CIFS in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all instances in the current region
-            response = ec2.describe_instances()
-            for reservation in response['Reservations']:
-                for instance in reservation['Instances']:
-                    # Check for open CIFS port (445)
-                    for sg in instance['SecurityGroups']:
-                        group_id = sg['GroupId']
-                        group = ec2.describe_security_groups(GroupIds=[group_id])['SecurityGroups'][0]
-                        for ip_permission in group['IpPermissions']:
-                            if ip_permission['IpProtocol'] == 'tcp' and \
-                                    ip_permission['FromPort'] <= 445 <= ip_permission['ToPort'] and \
-                                    {'CidrIp': '0.0.0.0/0'} in ip_permission['IpRanges']:
-                                warning = {
-                                    "warning": f"Open CIFS port (445) found in security group {group_id} of instance {instance['InstanceId']} in region {region}",
-                                    "explanation": "Open CIFS ports can allow unauthorized access to files on the instance",
-                                    "recommendation": "Close the CIFS port (445) in the security group using the EC2 console or the AWS CLI"}
-                                warnings.append(warning)
-        EC2_VPC_outputs("Open CIFS ports", warnings)
-
     # Define the check_ec2_key_based_login function
     def check_ec2_key_based_login(ec2_clients):
         warnings = []
@@ -450,30 +274,6 @@ def check_EC2_VPC_configurations(ec2_clients):
                                             "recommendation": "Use a more secure authentication method, such as multi-factor authentication or IAM roles"}
                                         warnings.append(warning)
         EC2_VPC_outputs("EC2 instances using key-based login", warnings)
-
-    # Define the check_EC2_FTP function
-    def check_EC2_FTP(ec2_clients):
-        warnings = []
-        # Get a list of all available regions
-        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
-        for region in regions:
-            print(f"Checking FTP in {region}...")
-            ec2 = boto3.client('ec2', region_name=region)
-            # Retrieve information about all instances in the current region
-            response = ec2.describe_instances()
-            # Check if any instance has an open FTP port
-            for reservation in response['Reservations']:
-                for instance in reservation['Instances']:
-                    for security_group in instance['SecurityGroups']:
-                        if 'IpPermissions' in security_group:
-                            for ip_permission in security_group['IpPermissions']:
-                                if ip_permission.get('FromPort') == 21 and ip_permission.get('IpProtocol') == 'tcp':
-                                    warning = {
-                                        "warning": f"EC2 instance {instance['InstanceId']} in region {region} has an open FTP port",
-                                        "explanation": "FTP is an insecure protocol and should not be used to transfer sensitive data",
-                                        "recommendation": "Disable FTP and use a more secure protocol like SFTP or SCP to transfer data"}
-                                    warnings.append(warning)
-            EC2_VPC_outputs("EC2 FTP Open Ports", warnings)
 
     # Define the check_VPC_firewalls function
     def check_VPC_firewalls(ec2_clients):
@@ -503,29 +303,809 @@ def check_EC2_VPC_configurations(ec2_clients):
                                     warnings.append(warning)
         EC2_VPC_outputs("VPC Firewalls", warnings)
 
-    # Call the functions and populate the policy_warnings dictionary
+    # Define the check_vpc_open_mysql function
+    def check_vpc_open_mysql(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open MySQL in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve information about all VPCs in the current region
+            for vpc in ec2.vpcs.all():
+                for sg in vpc.security_groups.all():
+                    # Check if the security group allows inbound traffic on port 3306 (MySQL)
+                    for ip_permission in sg.ip_permissions:
+                        if ip_permission['IpProtocol'] == 'tcp' and ip_permission['FromPort'] == 3306 and \
+                                any([ip_range['CidrIp'] == '0.0.0.0/0' for ip_range in ip_permission['IpRanges']]):
+                            warning = {
+                                "warning": f"Security Group {sg.id} in VPC {vpc.id} in region {region} allows open MySQL port to the internet",
+                                "explanation": "Allowing inbound traffic on port 3306 to the internet can expose your MySQL server to security risks",
+                                "recommendation": "Restrict the security group to only allow MySQL traffic from trusted sources"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPC Open MySQL Ports", warnings)
+
+    # Define the check_vpc_open_oracle function
+    def check_vpc_open_oracle(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Oracle in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an Oracle security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 1521 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0].get('CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Oracle port (1521) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Oracle should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Oracle to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Oracle", warnings)
+
+    # Define the check_vpc_open_netbios function
+    def check_vpc_open_netbios(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Netbios in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a NetBIOS security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 137 and ip_permission.get('IpProtocol') == 'udp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open NetBIOS port (137/138) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "NetBIOS should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to NetBIOS to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for NetBIOS", warnings)
+
+    # Define the check_vpc_open_postgres function
+    def check_vpc_open_postgres(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Postgres in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a PostgreSQL security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 5432 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open PostgreSQL port (5432) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "PostgreSQL should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to PostgreSQL to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for PostgreSQL", warnings)
+
+    # Define the check_vpc_open_kibana function
+    def check_vpc_open_kibana(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Kibana in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a Kibana security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 5601 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Kibana port (5601) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Kibana should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Kibana to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Kibana", warnings)
+
+    # Define the check_vpc_open_adw function
+    def check_vpc_open_adw(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open ADW in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an Oracle ADW security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 1522 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Oracle ADW port (1522) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Oracle ADW should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Oracle ADW to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Oracle Auto Data Warehouse", warnings)
+
+    # Define the check_vpc_open_hdfs function
+    def check_vpc_open_hdfs(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open HGFS in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a Hadoop HDFS NameNode WebUI security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 50070 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Hadoop HDFS NameNode WebUI port (50070) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Hadoop HDFS NameNode WebUI should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Hadoop HDFS NameNode WebUI to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Hadoop HDFS NameNode WebUI", warnings)
+
+    # Define the check_vpc_open_ftp function
+    def check_vpc_open_ftp(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open FTP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an FTP security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 21 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open FTP port (21) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "FTP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to FTP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for FTP", warnings)
+
+    # Define the check_vpc_open_docker function
+    def check_vpc_open_docker(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Docker in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a Docker security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 2375 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Docker port (2375) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Docker should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Docker to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Docker", warnings)
+
+    # Define the check_vpc_open_cifs function
+    def check_vpc_open_cifs(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open CIFS in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a CIFS security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 445 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open CIFS port (445) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "CIFS should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to CIFS to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for CIFS", warnings)
+
+    # Define the check_vpc_open_rdp function
+    def check_vpc_open_rdp(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open RDP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an RDP security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 3389 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open RDP port (3389) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "RDP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to RDP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for RDP", warnings)
+
+    # Define the check_vpc_open_rpc function
+    def check_vpc_open_rpc(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open RPC in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an RPC security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 135 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open RPC port (135) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "RPC should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to RPC to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for RPC", warnings)
+
+    # Define the check_vpc_open_salt function
+    def check_vpc_open_salt(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open Salt in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a Salt security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 4505 and ip_permission.get('ToPort') == 4506 and
+                                ip_permission.get('IpProtocol') == 'tcp' and ip_permission.get('IpRanges')[0][
+                                    'CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Salt port (4505/4506) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Salt should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Salt to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Salt", warnings)
+
+    # Define the check_vpc_open_smb function
+    def check_vpc_open_smb(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open SMB over TCP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an SMB over TCP security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 445 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges')[0]['CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open SMB over TCP port (445) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "SMB over TCP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to SMB over TCP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for SMB over TCP", warnings)
+
+    # Define the check_vpc_open_smtp function
+    def check_vpc_open_smtp(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open SMTP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has an SMTP security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 25 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0][
+                                    'CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open SMTP port (25) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "SMTP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to SMTP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for SMTP", warnings)
+
+    # Define the check_vpc_open_sql_server function
+    def check_vpc_open_sql_server(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for SQL Server in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a SQL Server security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 1433 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0][
+                                    'CidrIp'] == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open SQL Server port (1433) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "SQL Server should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to SQL Server to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for SQL Server", warnings)
+
+    # Define the check_vpc_open_ssh function
+    def check_vpc_open_ssh(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for SSH in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 22 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open SSH port (22) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "SSH should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to SSH to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for SSH", warnings)
+
+    # Define the check_vpc_open_telnet function
+    def check_vpc_open_telnet(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Telnet in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            # Retrieve all VPCs in the current region
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                # Check if the VPC has a Telnet security group rule open to the internet
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 23 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Telnet port (23) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Telnet should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Telnet to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Telnet", warnings)
+
+    # Define the check_vpc_open_vnc function
+    def check_vpc_open_vnc(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for VNC Client in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 5900 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open VNC Client port (5900) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "VNC client should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to VNC client to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for VNC Client", warnings)
+
+    # Define the check_vpc_open_vnc_server function
+    def check_vpc_open_vnc_server(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for VNC Server in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 5900 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open VNC Server port (5900) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "VNC server should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to VNC server to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for VNC Server", warnings)
+
+    # Define the check_vpc_open_mongodb function
+    def check_vpc_open_mongodb(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for MongoDB in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 27017 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open MongoDB port (27017) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "MongoDB should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to MongoDB to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for MongoDB", warnings)
+
+    # Define the check_vpc_open_cassandra function
+    def check_vpc_open_cassandra(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Cassandra Client in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 9042 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Cassandra Client port (9042) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Cassandra Client should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Cassandra Client to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Cassandra Client", warnings)
+
+    # Define the check_vpc_open_cassandra_internode function
+    def check_vpc_open_cassandra_internode(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Cassandra Internode in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 7000 and ip_permission.get('ToPort') == 7001 and
+                                ip_permission.get('IpProtocol') == 'tcp' and ip_permission.get('IpRanges') and
+                                ip_permission.get('IpRanges')[0].get('CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Cassandra internode ports (7000-7001) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Cassandra internode should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Cassandra internode to a trusted set of IP addresses or use a VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Cassandra Internode", warnings)
+
+    # Define the check_vpc_open_cassandra_monitoring function
+    def check_vpc_open_cassandra_monitoring(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Cassandra Monitoring in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 7199 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Cassandra Monitoring port (7199) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Cassandra Monitoring should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Cassandra Monitoring to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Cassandra Monitoring", warnings)
+
+    # Define the check_vpc_open_cassandra_thrift function
+    def check_vpc_open_cassandra_thrift(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Cassandra Thrift in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 9160 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Cassandra Thrift port (9160) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Cassandra Thrift should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Cassandra Thrift to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Cassandra Thrift", warnings)
+
+    # Define the check_vpc_open_ldap function
+    def check_vpc_open_ldap(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for LDAP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 389 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open LDAP port (389) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "LDAP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to LDAP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for LDAP", warnings)
+
+    # Define the check_vpc_open_ldaps function
+    def check_vpc_open_ldaps(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for LDAPS in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 636 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open LDAPS port (636) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "LDAPS should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to LDAPS to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for LDAPS", warnings)
+
+    # Define the check_vpc_open_snmp function
+    def check_vpc_open_snmp(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for SNMP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 161 and ip_permission.get('IpProtocol') == 'udp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open SNMP port (161) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "SNMP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to SNMP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for SNMP", warnings)
+
+    # Define the check_vpc_open_memcached function
+    def check_vpc_open_memcached(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Memcached in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 11211 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Memcached port (11211) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Memcached should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Memcached to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Memcached", warnings)
+
+    # Define the check_vpc_open_redis function
+    def check_vpc_open_redis(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for Redis in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 6379 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open Redis port (6379) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "Redis should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to Redis to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for Redis", warnings)
+
+    # Define the check_vpc_open_http function
+    def check_vpc_open_http(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for HTTP in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 80 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open HTTP port (80) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "HTTP should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to HTTP to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for HTTP", warnings)
+
+    # Define the check_vpc_open_https function
+    def check_vpc_open_https(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking VPCs Open for HTTPS in {region}...")
+            ec2 = boto3.resource('ec2', region_name=region)
+            vpcs = list(ec2.vpcs.all())
+            for vpc in vpcs:
+                for sg in vpc.security_groups.all():
+                    for ip_permission in sg.ip_permissions:
+                        if (ip_permission.get('FromPort') == 443 and ip_permission.get('IpProtocol') == 'tcp' and
+                                ip_permission.get('IpRanges') and ip_permission.get('IpRanges')[0].get(
+                                    'CidrIp') == '0.0.0.0/0'):
+                            warning = {
+                                "warning": f"Open HTTPS port (443) found in security group {sg.group_id} of VPC {vpc.id} in region {region}",
+                                "explanation": "HTTPS should not be open to the internet as it is a security risk",
+                                "recommendation": "Restrict access to HTTPS to a trusted set of IP addresses or VPN"}
+                            warnings.append(warning)
+        EC2_VPC_outputs("VPCs Open for HTTPS", warnings)
+
+    # Define the check_unused_security_groups function
+    def check_unused_security_groups(ec2_clients):
+        warnings = []
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking unused security groups in {region}...")
+            ec2 = boto3.client('ec2', region_name=region)
+            # Get a list of all security groups in the current region
+            security_groups = ec2.describe_security_groups()['SecurityGroups']
+            # Retrieve information about all running instances in the current region
+            instances = ec2.describe_instances()
+            # Create a set of all security group IDs associated with running instances
+            instance_sgs = set()
+            for reservation in instances['Reservations']:
+                for instance in reservation['Instances']:
+                    for sg in instance['SecurityGroups']:
+                        instance_sgs.add(sg['GroupId'])
+            # Check if any security groups are unused
+            for sg in security_groups:
+                if sg['GroupId'] not in instance_sgs:
+                    warning = {"warning": f"Unused security group {sg['GroupId']} in region {region}",
+                               "explanation": "Unused security groups are a potential security risk as they may allow unauthorized access to instances",
+                               "recommendation": "Delete the unused security group using the EC2 console or the AWS CLI"}
+                    warnings.append(warning)
+        EC2_VPC_outputs("Unused Security Groups", warnings)
+
+    # Define the check_EC2_unused_EBS_volumes function
+    def check_EC2_unused_EBS_volumes(ec2_clients):
+        warnings = []
+        # Get a list of all available regions
+        regions = [region['RegionName'] for region in ec2_clients.describe_regions()['Regions']]
+        for region in regions:
+            print(f"Checking unused EBS volumes in {region}...")
+            ec2 = boto3.client('ec2', region_name=region)
+            # Retrieve information about all EBS volumes in the current region
+            response = ec2.describe_volumes()
+            # Check if the volume is not in use
+            for volume in response['Volumes']:
+                # Create a dictionary with information about the unused volume
+                if volume['State'] == 'available':
+                    volume_info = {"VolumeId": volume['VolumeId'], "State": volume['State'], "Region": region}
+                    warning = {"warning": f"Unused EBS volume {volume['VolumeId']} in region {region}",
+                               "explanation": "Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs",
+                               "recommendation": "Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI"}
+                    warnings.append(warning)
+        EC2_VPC_outputs("EC2 Unused EBS Volumes", warnings)
+
+
     check_EC2_EBS_volumes(ec2_clients)
     check_ec2_ebs_backup(ec2_clients)
     check_security_groups_ingress(ec2_clients)
     check_EC2_public_ips(ec2_clients)
-    check_unused_vpgs(ec2_clients)
     check_unassociated_eips(ec2_clients)
     check_EC2_excessive_security_groups(ec2_clients)
+    check_ec2_key_based_login(ec2_clients)
+    check_EC2_unused_EBS_volumes(ec2_clients)
+    check_unused_vpgs(ec2_clients)
+    check_VPC_firewalls(ec2_clients)
     check_network_acl_tags(ec2_clients)
     check_open_all_ports_egress(ec2_clients)
     check_open_dns(ec2_clients)
-    check_ec2_key_based_login(ec2_clients)
-    check_VPC_firewalls(ec2_clients)
-    #check_VPC_NAT_Gateways(ec2_clients)
-    #check_vpc_endpoint_exposure(ec2_clients)
-    #check_unused_amis(ec2_clients)
-    #check_unused_vpc_igws(ec2_clients)
-    #check_ec2_elastic_ip_limits(ec2_clients)
-    #check_open_CIFS(ec2_clients)
-    #check_EC2_FTP(ec2_clients)
-
-
-
+    check_vpc_open_oracle(ec2_clients)
+    check_vpc_open_mysql(ec2_clients)
+    check_vpc_open_netbios(ec2_clients)
+    check_vpc_open_postgres(ec2_clients)
+    check_vpc_open_kibana(ec2_clients)
+    check_vpc_open_adw(ec2_clients)
+    check_vpc_open_hdfs(ec2_clients)
+    check_vpc_open_ftp(ec2_clients)
+    check_vpc_open_docker(ec2_clients)
+    check_vpc_open_cifs(ec2_clients)
+    check_vpc_open_rdp(ec2_clients)
+    check_vpc_open_rpc(ec2_clients)
+    check_vpc_open_salt(ec2_clients)
+    check_vpc_open_smb(ec2_clients)
+    check_vpc_open_smtp(ec2_clients)
+    check_vpc_open_sql_server(ec2_clients)
+    check_vpc_open_ssh(ec2_clients)
+    check_vpc_open_telnet(ec2_clients)
+    check_vpc_open_vnc(ec2_clients)
+    check_vpc_open_vnc_server(ec2_clients)
+    check_vpc_open_mongodb(ec2_clients)
+    check_vpc_open_cassandra(ec2_clients)
+    check_vpc_open_cassandra_internode(ec2_clients)
+    check_vpc_open_cassandra_monitoring(ec2_clients)
+    check_vpc_open_cassandra_thrift(ec2_clients)
+    check_vpc_open_ldap(ec2_clients)
+    check_vpc_open_ldaps(ec2_clients)
+    check_vpc_open_snmp(ec2_clients)
+    check_vpc_open_memcached(ec2_clients)
+    check_vpc_open_redis(ec2_clients)
+    check_vpc_open_http(ec2_clients)
+    check_vpc_open_https(ec2_clients)
+    check_unused_security_groups(ec2_clients)
 
 
     # Print all warnings to a log file
