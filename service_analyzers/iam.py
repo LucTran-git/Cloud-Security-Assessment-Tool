@@ -94,6 +94,35 @@ def dict_printer(dict, file_format):
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 
+
+#starting function for IAM - EC2 checks
+def IAM_EC2_starter(accountSession):
+    print('Acquiring ec2 available regions...')
+    ec2_regions = []
+    for regionName in accountSession.get_available_regions('ec2'):
+        try:
+            print('Getting region...')
+            ec2_clientTMP = accountSession.client('ec2', region_name=regionName)
+            ec2_clientTMP.describe_instances()
+            ec2_regions.append(regionName)
+        except botocore.exceptions.ClientError as e:
+            print(f"region unavailable: {regionName}: {str(e)}")
+            pass
+
+    #2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
+    print('Creating list of ec2 clients...')
+    ec2_clients_List = []
+
+
+    for i in range(len(ec2_regions)):
+        ec2_clients_List.append(accountSession.client('ec2', ec2_regions[i]))
+
+
+    check_IAM_EC2_configurations(ec2_clients_List)
+
+
+
+
 #helper used to append an instance of a warning to EC2_VPC_checks[warning_name]
 def EC2_VPC_checks_writer(warning_category, error_dict):
     if warning_category not in EC2_VPC_checks:
