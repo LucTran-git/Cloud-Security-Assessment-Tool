@@ -1,6 +1,7 @@
 import boto3
 import json
 import botocore.exceptions
+from .abstract import * 
 
 cloudtrail_clients_List = []
 
@@ -112,30 +113,16 @@ def enable_data_events_for_cloudtrail(aws_access_key_id, aws_secret_access_key, 
     
 
 
-def populate_client_list():
+def populate_client_list(accountSession):
     global cloudtrail_clients_List
     try:
-        with open('Credentials.json', 'r') as credsFile:
-            credsData = json.load(credsFile)
-
-            if (not credsData['AWS']['access_key_id'] or not credsData['AWS']['secret_access_key']):
-                credsData['AWS']['access_key_id'] = input("Please enter Access Key ID:")
-                credsData['AWS']['secret_access_key'] = input("Please enter Secret Access Key:")
-
-                with open('Credentials.json', 'w') as credsFileOut:
-                    json.dump(credsData, credsFileOut, indent=4)
-
-        accessKeyId = credsData['AWS']['access_key_id']
-        secretAccessKey = credsData['AWS']['secret_access_key']
-
-        session = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 
         # 1. since an account can have multiple instances in different regions, get a list of regions where the service is available
         cloudtrail_regions = []
 
-        for regionName in session.get_available_regions('cloudtrail'):
+        for regionName in accountSession.get_available_regions('cloudtrail'):
             try:
-                cloudtrail_clientTMP = session.client('cloudtrail', region_name=regionName)
+                cloudtrail_clientTMP = accountSession.client('cloudtrail', region_name=regionName)
                 response = cloudtrail_clientTMP.lookup_events(LookupAttributes=[])
                 cloudtrail_regions.append(regionName)
             except botocore.exceptions.ClientError as e:
@@ -145,7 +132,7 @@ def populate_client_list():
         # 2. create a list of service "client" objects for each region for the service and obtain a description of those cloudtrail instances
         #cloudtrail_clients_List = []
         for i in range(len(cloudtrail_regions)):
-            cloudtrail_clients_List.append(session.client('cloudtrail', cloudtrail_regions[i]))
+            cloudtrail_clients_List.append(accountSession.client('cloudtrail', cloudtrail_regions[i]))
             try:
                 trails = cloudtrail_clients_List[-1].describe_trails()
                 print(f"Found {len(trails['trailList'])} trails in {cloudtrail_regions[i]}")
@@ -218,7 +205,7 @@ def check_log_file_validation_enabled(cloudtrail_clients_List):
                 print(f'Error getting trail status for trail "{trail_name}": {e}')
 
 
-def starting_function():
+def starting_function(accountSession):
     # Assuming that starting_function() fills cloudtrail_clients_List with CloudTrail clients
     
     populate_client_list()
@@ -231,4 +218,3 @@ def starting_function():
 
     dict_printer(cloudtrail_report, 'txt')
 
-starting_function()

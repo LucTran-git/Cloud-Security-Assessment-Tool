@@ -4,18 +4,11 @@ import botocore
 from botocore.exceptions import ClientError
 
 
-session = boto3.Session(aws_access_key_id="AKIA6A7E4M7G6IXB3ORZ",aws_secret_access_key= "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")
-
-# Create S3 client
-
-s3_client = session.client('s3')
-
-# Get all S3 bucket names
-response = s3_client.list_buckets()
-buckets = response['Buckets']
 
 
-def check_s3_bucket_acl():
+
+
+def check_s3_bucket_acl(session, s3_client, buckets):
     warnings = []
     
     for bucket in buckets:
@@ -44,7 +37,7 @@ def check_s3_bucket_acl():
 
 
 
-def check_s3_bucket_policy(s3_client):
+def check_s3_bucket_policy(s3_client, buckets):
     warnings = []
     for bucket in buckets:
         try:
@@ -150,7 +143,7 @@ def check_s3_object_ownership(s3_client, expected_owner_id):
 
 
 
-def check_s3_bucket_encryption_in_transit(s3_client):
+def check_s3_bucket_encryption_in_transit(s3_client, buckets):
     warnings = []
     
     for b in buckets:
@@ -183,14 +176,15 @@ import os
 
 
 
-def get_all_warnings():
+def get_all_warnings(session, s3_client, buckets):
     get_all_warnings = []
     print('Starting create your warning file................................')
-    result_s3_bucket_acl = check_s3_bucket_acl()
-    result_s3_bucket_policy = check_s3_bucket_policy(s3_client)
+    result_s3_bucket_acl = check_s3_bucket_acl(session, s3_client, buckets)
+    result_s3_bucket_policy = check_s3_bucket_policy(s3_client, buckets)
     result_s3_service_encryption = check_s3_service_encryption(s3_client)
     result_s3_object_ownership = check_s3_object_ownership(s3_client, 9641163299277)
     result_s3_bucket_encryption_in_transit = check_s3_bucket_encryption_in_transit(s3_client)
+
     get_all_warnings.append(result_s3_bucket_acl)
     get_all_warnings.append(result_s3_bucket_policy)
     get_all_warnings.append(result_s3_service_encryption)
@@ -211,6 +205,16 @@ def write_warnings_to_file(warnings):
         json.dump(warnings, f)
         print('successfuly created json file!')
 
-write_warnings_to_file(get_all_warnings())
+
+def S3_starting_function(session):
+    # Create S3 client
+
+    s3_client = session.client('s3')
+
+    # Get all S3 bucket names
+    response = s3_client.list_buckets()
+    buckets = response['Buckets']
+
+    write_warnings_to_file(get_all_warnings(session, s3_client, buckets))
 
 
