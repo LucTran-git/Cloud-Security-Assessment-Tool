@@ -1,181 +1,181 @@
 	
-0	
+	
 warning	"S3 bucket tttpp in region us-east-2 has a public bucket policy"
 explanation	"Public bucket policies can potentially allow unauthorized access to data"
 recommendation	"Review the bucket policy for tttpp and adjust permissions if necessary"
-1	
+	
 warning	"S3 bucket logging-bucket-for-checking in region us-west-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-2	
+	
 warning	"S3 bucket scaning in region us-east-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-3	
+	
 warning	"S3 bucket security-test-bucket-1 in region us-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-4	
+	
 warning	"S3 bucket security-test-bucket-10 in region None is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-5	
+	
 warning	"S3 bucket security-test-bucket-11 in region us-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-6	
+	
 warning	"S3 bucket security-test-bucket-12 in region us-west-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-7	
+	
 warning	"S3 bucket security-test-bucket-13 in region eu-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-8	
+	
 warning	"S3 bucket security-test-bucket-14 in region ap-southeast-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-9	
+	
 warning	"S3 bucket security-test-bucket-15 in region None is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-10	
+	
 warning	"S3 bucket security-test-bucket-16 in region us-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-11	
+	
 warning	"S3 bucket security-test-bucket-17 in region us-west-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-12	
+	
 warning	"S3 bucket security-test-bucket-18 in region eu-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-13	
+	
 warning	"S3 bucket security-test-bucket-19 in region ap-southeast-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-14	
+	
 warning	"S3 bucket security-test-bucket-2 in region us-west-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-15	
+	
 warning	"S3 bucket security-test-bucket-20 in region None is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-16	
+	
 warning	"S3 bucket security-test-bucket-3 in region eu-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-17	
+	
 warning	"S3 bucket security-test-bucket-4 in region ap-southeast-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-18	
+	
 warning	"S3 bucket security-test-bucket-5 in region None is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-19	
+	
 warning	"S3 bucket security-test-bucket-6 in region us-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-20	
+	
 warning	"S3 bucket security-test-bucket-7 in region us-west-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-21	
+	
 warning	"S3 bucket security-test-bucket-8 in region eu-west-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-22	
+	
 warning	"S3 bucket security-test-bucket-9 in region ap-southeast-1 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-23	
+	
 warning	"S3 bucket tttpp in region us-east-2 is encrypted with AES256 algorithm"
 explanation	"S3 service is encrypted to protect data confidentiality"
 recommendation	"Ensure all S3 buckets in the account are similarly encrypted"
-24	
+	
 warning	"S3 bucket logging-bucket-for-checking in region us-west-2 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for logging-bucket-for-checking using the S3 console or the AWS CLI"
-25	
+	
 warning	"S3 bucket scaning in region us-east-2 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for scaning using the S3 console or the AWS CLI"
-26	
+	
 warning	"S3 bucket security-test-bucket-1 in region us-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-1 using the S3 console or the AWS CLI"
-27	
+	
 warning	"S3 bucket security-test-bucket-10 in region None does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-10 using the S3 console or the AWS CLI"
-28	
+	
 warning	"S3 bucket security-test-bucket-11 in region us-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-11 using the S3 console or the AWS CLI"
-29	
+	
 warning	"S3 bucket security-test-bucket-13 in region eu-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-13 using the S3 console or the AWS CLI"
-30	
+	
 warning	"S3 bucket security-test-bucket-14 in region ap-southeast-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-14 using the S3 console or the AWS CLI"
-31	
+	
 warning	"S3 bucket security-test-bucket-15 in region None does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-15 using the S3 console or the AWS CLI"
-32	
+	
 warning	"S3 bucket security-test-bucket-16 in region us-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-16 using the S3 console or the AWS CLI"
-33	
+	
 warning	"S3 bucket security-test-bucket-17 in region us-west-2 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-17 using the S3 console or the AWS CLI"
-34	
+	
 warning	"S3 bucket security-test-bucket-18 in region eu-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-18 using the S3 console or the AWS CLI"
-35	
+	
 warning	"S3 bucket security-test-bucket-19 in region ap-southeast-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-19 using the S3 console or the AWS CLI"
-36	
+	
 warning	"S3 bucket security-test-bucket-2 in region us-west-2 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-2 using the S3 console or the AWS CLI"
-37	
+	
 warning	"S3 bucket security-test-bucket-20 in region None does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-20 using the S3 console or the AWS CLI"
-38	
+	
 warning	"S3 bucket security-test-bucket-3 in region eu-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-3 using the S3 console or the AWS CLI"
-39	
+	
 warning	"S3 bucket security-test-bucket-4 in region ap-southeast-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-4 using the S3 console or the AWS CLI"
-40	
+	
 warning	"S3 bucket security-test-bucket-5 in region None does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-5 using the S3 console or the AWS CLI"
-41	
+	
 warning	"S3 bucket security-test-bucket-6 in region us-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-6 using the S3 console or the AWS CLI"
-42	
+	
 warning	"S3 bucket security-test-bucket-8 in region eu-west-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-8 using the S3 console or the AWS CLI"
-43	
+	
 warning	"S3 bucket security-test-bucket-9 in region ap-southeast-1 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for security-test-bucket-9 using the S3 console or the AWS CLI"
-44	
+	
 warning	"S3 bucket tttpp in region us-east-2 does not have logging enabled"
 explanation	"Logging is crucial for auditing and security purposes"
 recommendation	"Enable logging for tttpp using the S3 console or the AWS CLI"
