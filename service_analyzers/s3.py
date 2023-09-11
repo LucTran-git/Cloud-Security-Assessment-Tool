@@ -1,216 +1,233 @@
 import boto3
 import json
-import botocore
+import os
+import logging
 from botocore.exceptions import ClientError
+from concurrent.futures import ThreadPoolExecutor
+from os import cpu_count
 
 
-session = boto3.Session(aws_access_key_id="AKIA6A7E4M7G6IXB3ORZ",aws_secret_access_key= "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")
+class S3SecurityChecker:
+    def __init__(self):
+        # Initialize session using environment variables
+        self.session = boto3.Session(
+            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+        )
+        self.s3_client = self.session.client('s3')
+        self.buckets = self._get_all_buckets()
 
-# Create S3 client
+    def _get_all_buckets(self):
+        response = self.s3_client.list_buckets()
+        return response['Buckets']
 
-s3_client = session.client('s3')
+    def _get_region_for_bucket(self, bucket_name):
+        return self.s3_client.get_bucket_location(Bucket=bucket_name)['LocationConstraint']
 
-# Get all S3 bucket names
-response = s3_client.list_buckets()
-buckets = response['Buckets']
-
-
-def check_s3_bucket_acl():
-    warnings = []
-    
-    for bucket in buckets:
-        print(f"Checking S3 bucket ACLs in {bucket['Name']}...")
-        region = s3_client.get_bucket_location(Bucket=bucket['Name'])['LocationConstraint']
-        s3 = session.client('s3', region_name=region)
+    def check_s3_bucket_acl(self, bucket):
+        """
+        Check if the S3 buckets have appropriate Access Control Lists (ACLs) to prevent public access.
+        """
+        warnings = []
         bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
         try:
             acl = s3.get_bucket_acl(Bucket=bucket_name)
-            grants = acl['Grants']
-            for grant in grants:
+            for grant in acl['Grants']:
                 grantee = grant['Grantee']
-                
                 if 'URI' in grantee and grantee['URI'] == 'http://acs.amazonaws.com/groups/global/AllUsers':
-                    warning = {"warning": f"S3 bucket {bucket_name} in region {region} has public read access",
-                               "explanation": "Public read access can allow anyone to view the contents of a bucket",
-                               "recommendation": f"Update the bucket ACL for {bucket_name} to restrict public access using the S3 console or the AWS CLI"}
+                    warning = {
+                        "warning": f"S3 bucket {bucket_name} in region {region} has public read access",
+                        "explanation": "Public read access can allow anyone to view the contents of a bucket",
+                        "recommendation": f"Update the bucket ACL for {bucket_name} to restrict public access"
+                    }
                     warnings.append(warning)
-                    
-        except s3.exceptions.ClientError as e:
-            print(f"Error checking S3 bucket {bucket_name} in region {region}: {e}")
-    
-    return warnings
+        except ClientError as e:
+            logging.error(f"Error checking S3 bucket {bucket_name} in region {region}: {e}")
+        return warnings
 
 
-
-
-
-def check_s3_bucket_policy(s3_client):
-    warnings = []
-    for bucket in buckets:
+    def check_s3_bucket_policy(self, bucket):
+        """
+        Review the S3 bucket policies to ensure they don't grant public or overly permissive access.
+        """
+        warnings = []
+        bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
         try:
-            policy = s3_client.get_bucket_policy(Bucket=bucket['Name'])
-            if policy['Policy'] != '':
-                policy_statement = json.loads(policy['Policy'])['Statement']
-               
-                if isinstance(policy_statement, list):
-                    for statement in policy_statement:
-                        if 'Effect' in statement  and 'Principal' in statement:
-                            principal = statement['Principal']
-                            if '*' in principal or 'AWS' in principal and principal['AWS'] == '*':
-                                warning = {"warning": f"S3 bucket {bucket['Name']} has a public bucket policy",
-                                           "explanation": "Public bucket policies can potentially allow unauthorized access to data",
-                                           "recommendation": f"Review the bucket policy for {bucket['Name']} and adjust permissions if necessary using the S3 console or the AWS CLI"}
-                                warnings.append(warning)
-                                break
-        except botocore.exceptions.ClientError as e:
-            error_code = e.response['Error']['Code']
-            if error_code != 'NoSuchBucketPolicy':
-                print(f"Error checking S3 bucket {bucket['Name']}: {e}")
-    return warnings
+            policy = s3.get_bucket_policy(Bucket=bucket_name)
+            policy_statement = json.loads(policy['Policy'])['Statement']
+            for statement in policy_statement:
+                if 'Effect' in statement and 'Principal' in statement:
+                    principal = statement['Principal']
+                    if '*' in principal or ('AWS' in principal and principal['AWS'] == '*'):
+                        warning = {
+                            "warning": f"S3 bucket {bucket_name} in region {region} has a public bucket policy",
+                            "explanation": "Public bucket policies can potentially allow unauthorized access to data",
+                            "recommendation": f"Review the bucket policy for {bucket_name} and adjust permissions if necessary"
+                        }
+                        warnings.append(warning)
+        except ClientError as e:
+            if e.response['Error']['Code'] != 'NoSuchBucketPolicy':
+                logging.error(f"Error checking S3 bucket {bucket_name} in region {region}: {e}")
+        return warnings
 
 
-
-
-
-
-def check_s3_service_encryption(s3_client):
-    """
-    Check if the S3 service has encryption enabled for all regions.
-    """
-    warnings = []
-
-    bucket_list = s3_client.list_buckets()
-
-    for bucket in bucket_list['Buckets']:
-        print(f"Checking S3 encryption for {bucket['Name']} region...")
-        s3 = boto3.client('s3', region_name=s3_client.meta.region_name)
+    def check_s3_service_encryption(self, bucket):
+        """
+        Check if the S3 service has encryption enabled for the specified bucket.
+        """
+        warnings = []
+        bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
         try:
-            
-            encryption = s3_client.get_bucket_encryption(Bucket=bucket['Name'])['ServerSideEncryptionConfiguration']['Rules'][0]['ApplyServerSideEncryptionByDefault']['SSEAlgorithm']
-            if encryption != 'AES256':
-                warning = {"warning": f"S3 service in {bucket['Name']} region is not encrypted with AES256 algorithm",
-                           "explanation": "S3 service should be encrypted to protect data confidentiality",
-                           "recommendation": f"Enable default encryption for all S3 buckets in {bucket['Name']} region using the S3 console or the AWS CLI"}
+            encryption = s3.get_bucket_encryption(Bucket=bucket_name)
+            sse_algorithm = encryption['ServerSideEncryptionConfiguration']['Rules'][0]['ApplyServerSideEncryptionByDefault']['SSEAlgorithm']
+            if sse_algorithm != 'AES256':
+                warning = {
+                    "warning": f"S3 bucket {bucket_name} in region {region} is not encrypted with AES256 algorithm",
+                    "explanation": "S3 service should be encrypted to protect data confidentiality",
+                    "recommendation": f"Enable default encryption for {bucket_name} using AES256 algorithm"
+                }
                 warnings.append(warning)
             else:
-                warning = {"warning": f"S3 service in {bucket['Name']} region is encrypted with AES256 algorithm",
-                           "explanation": "S3 service should be encrypted to protect data confidentiality",
-                           "recommendation": f"Enable default encryption for all S3 buckets in {bucket['Name']} region using the S3 console or the AWS CLI"}
+                warning = {
+                    "warning": f"S3 bucket {bucket_name} in region {region} is encrypted with AES256 algorithm",
+                    "explanation": "S3 service is encrypted to protect data confidentiality",
+                    "recommendation": f"Ensure all S3 buckets in the account are similarly encrypted"
+                }
                 warnings.append(warning)
         except ClientError as e:
-            if e.response['Error']['Code'] != 'AccessDenied':
-                print(f"Access denied when checking S3 encryption for {bucket['Name']} region: {e}")
-            elif e.response['Error']['Code'] == 'ServerSideEncryptionConfigurationNotFoundError':
-                warning = {"warning": f"S3 service in {bucket['Name']} region does not have default encryption enabled",
-                           "explanation": "S3 service should be encrypted to protect data confidentiality",
-                           "recommendation": f"Enable default encryption for all S3 buckets in {bucket['Name']} region using the S3 console or the AWS CLI"}
-                warnings.append(warning)
+            if e.response['Error']['Code'] != 'ServerSideEncryptionConfigurationNotFoundError':
+                logging.error(f"Error checking S3 encryption for {bucket_name} in region {region}: {e}")
             else:
-                print(f"Error checking S3 encryption for {bucket['Name']} region: {e}")
+                warning = {
+                    "warning": f"S3 bucket {bucket_name} in region {region} does not have default encryption enabled",
+                    "explanation": "S3 service should be encrypted to protect data confidentiality",
+                    "recommendation": f"Enable default encryption for {bucket_name}"
+                }
+                warnings.append(warning)
+        return warnings
 
-    return warnings
 
-
-
-
-
-
-
-def check_s3_object_ownership(s3_client, expected_owner_id):
-    """
-    Check if the S3 objects are owned by the expected owner.
-    """
-    warnings = []
-
-    bucket_list = s3_client.list_buckets()
-
-    for bucket in bucket_list['Buckets']:
-        print(f"Checking S3 objects ownership for {bucket['Name']} bucket...")
-        s3 = boto3.client('s3', region_name=s3_client.meta.region_name)
+    def check_s3_object_ownership(self, bucket, expected_owner_id):
+        """
+        Validate the ownership of S3 objects in the specified bucket to ensure they are owned by the expected AWS account or entity.
+        """
+        warnings = []
+        bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
         try:
-            response = s3_client.list_objects_v2(Bucket=bucket['Name'])
+            response = s3.list_objects_v2(Bucket=bucket_name)
             if 'Contents' in response:
                 for obj in response['Contents']:
                     owner_id = obj['Owner']['ID']
-                    print(owner_id)
                     if owner_id != expected_owner_id:
-                        warning = {"warning": f"Object {obj['Key']} in {bucket['Name']} bucket is not owned by the expected owner",
-                                   "explanation": "Object ownership is important for security and access control",
-                                   "recommendation": f"Update the object ownership or access control settings for the {obj['Key']} object in {bucket['Name']} bucket"}
+                        warning = {
+                            "warning": f"Object {obj['Key']} in {bucket_name} is not owned by the expected owner",
+                            "explanation": "Object ownership is important for security and access control",
+                            "recommendation": f"Update the object ownership or access control settings for the {obj['Key']} in {bucket_name}"
+                        }
                         warnings.append(warning)
         except ClientError as e:
-            print(f"Error checking S3 objects ownership for {bucket['Name']} bucket: {e}")
-
-    return warnings
-
+            logging.error(f"Error checking S3 objects ownership for {bucket_name} in region {region}: {e}")
+        return warnings
 
 
+    def check_s3_bucket_encryption_in_transit(self, bucket):
+        """
+        Ensure that the provided S3 bucket has a policy that enforces encryption in transit to safeguard data during transfer operations.
+        """
+        warnings = []
+        bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
+        try:
+            response = s3.get_bucket_policy_status(Bucket=bucket_name)
+            status = response['PolicyStatus']['IsPublic']
+            if status:
+                warning = {
+                    "warning": f"S3 bucket {bucket_name} in region {region} has a public bucket policy",
+                    "explanation": "Public bucket policies can potentially allow unauthorized access to data",
+                    "recommendation": f"Review the bucket policy for {bucket_name} and adjust permissions if necessary"
+                }
+                warnings.append(warning)
+        except ClientError as e:
+            if e.response['Error']['Code'] != 'NoSuchBucketPolicy':
+                logging.error(f"Error checking S3 bucket {bucket_name} in region {region}: {e}")
+        return warnings
 
 
+    def check_s3_logging_enabled(self, bucket):
+        """
+        Verify if logging is enabled for the provided S3 bucket, as logging is crucial for auditing and security purposes.
+        """
+        warnings = []
+        bucket_name = bucket['Name']
+        region = self._get_region_for_bucket(bucket_name)
+        s3 = self.session.client('s3', region_name=region)
+        try:
+            logging_status = s3.get_bucket_logging(Bucket=bucket_name)
+            if not logging_status or 'LoggingEnabled' not in logging_status:
+                warning = {
+                    "warning": f"S3 bucket {bucket_name} in region {region} does not have logging enabled",
+                    "explanation": "Logging is crucial for auditing and security purposes",
+                    "recommendation": f"Enable logging for {bucket_name} using the S3 console or the AWS CLI"
+                }
+                warnings.append(warning)
+        except ClientError as e:
+            logging.error(f"Error checking logging for S3 bucket {bucket_name} in region {region}: {e}")
+        return warnings
 
-
-
-def check_s3_bucket_encryption_in_transit(s3_client):
-    warnings = []
     
-    for b in buckets:
-        print(f"Checking S3 bucket encryption in transit in {b['Name']}...")
-        s3 = boto3.client('s3', region_name=b['Name'])
+    def get_all_warnings(self):
+        all_warnings = []
+        bucket_count = len(self.buckets)
+        max_workers = min(cpu_count(), bucket_count)
+        logging.info(f"Using {max_workers} workers for {bucket_count} buckets.")
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_bucket = {
+                executor.submit(self.check_s3_bucket_acl, bucket): bucket for bucket in self.buckets
+            }
+            future_to_bucket.update({
+                executor.submit(self.check_s3_bucket_policy, bucket): bucket for bucket in self.buckets
+            })
+            future_to_bucket.update({
+                executor.submit(self.check_s3_service_encryption, bucket): bucket for bucket in self.buckets
+            })
+            future_to_bucket.update({
+                executor.submit(self.check_s3_object_ownership, bucket, "9641163299277"): bucket for bucket in self.buckets
+            })
+            future_to_bucket.update({
+                executor.submit(self.check_s3_bucket_encryption_in_transit, bucket): bucket for bucket in self.buckets
+            })
+            future_to_bucket.update({
+                executor.submit(self.check_s3_logging_enabled, bucket): bucket for bucket in self.buckets
+            })
+
+            for future in future_to_bucket:
+                all_warnings.extend(future.result())
         
-        for bucket in buckets:
-            bucket_name = bucket['Name']
-            try:
-                response = s3_client.get_bucket_policy_status(Bucket=bucket_name)
-                status = response['PolicyStatus']['IsPublic']
-                if status:
-                    warning = {"warning": f"S3 bucket {bucket_name} in region {b['Name']} has a public bucket policy",
-                               "explanation": "Public bucket policies can potentially allow unauthorized access to data",
-                               "recommendation": f"Review the bucket policy for {bucket_name} and adjust permissions if necessary using the S3 console or the AWS CLI"}
-                    warnings.append(warning)
-            except s3.exceptions.ClientError as e:
-                if e.response['Error']['Code'] == 'NoSuchBucketPolicy':
-                    continue
-                else:
-                    print(f"Error checking S3 bucket {bucket_name} in region {b['Name']}: {e}")
-    return warnings
+        return all_warnings
 
 
 
+    def write_warnings_to_file(self, folder_path='./logs/'):
+        warnings = self.get_all_warnings()
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        filename = os.path.join(folder_path, 's3_warnings.json')
+        with open(filename, 'w') as f:
+            json.dump(warnings, f, indent=4)  # This will format the JSON with an indentation of 4 spaces
+        logging.info('Successfully created warnings file!')
 
 
-import json
-import os
-
-
-
-def get_all_warnings():
-    get_all_warnings = []
-    print('Starting create your warning file................................')
-    result_s3_bucket_acl = check_s3_bucket_acl()
-    result_s3_bucket_policy = check_s3_bucket_policy(s3_client)
-    result_s3_service_encryption = check_s3_service_encryption(s3_client)
-    result_s3_object_ownership = check_s3_object_ownership(s3_client, 9641163299277)
-    result_s3_bucket_encryption_in_transit = check_s3_bucket_encryption_in_transit(s3_client)
-    get_all_warnings.append(result_s3_bucket_acl)
-    get_all_warnings.append(result_s3_bucket_policy)
-    get_all_warnings.append(result_s3_service_encryption)
-    get_all_warnings.append(result_s3_object_ownership)
-    get_all_warnings.append(result_s3_bucket_encryption_in_transit)
-
-    return get_all_warnings
-
-
-
-
-def write_warnings_to_file(warnings):
-    folder_path = './logs/'
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    filename =  folder_path + 'warnings.txt'
-    with open(filename, 'w') as f:
-        json.dump(warnings, f)
-        print('successfuly created json file!')
-
-write_warnings_to_file(get_all_warnings())
-
-
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    checker = S3SecurityChecker()
+    checker.write_warnings_to_file()
