@@ -13,12 +13,14 @@ from .abstract import *
 # abstract functions are called as iam.func_name()
 # instead of iam.abstract.func_name() 
 
-# We separate the warning info as follows to make it easier to format the report in different ways e.g. txt vs csv:
+# In general, we separate the warning info as follows to make it easier to format the report in different ways e.g. txt vs csv:
     # dict of (list of dicts) 
     # { <categorization> : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
-
-policy_warnings = {} 
+   
+    # for example, policy_warnings is organized like this:
     # { 'policy_name' : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
+policy_warnings = {} 
+
 EC2_VPC_checks = {} # create another dict since ec2 checks output differs from IAM due the multi-region feature
     # { 'warning category' : [{'warning':'', 'explanation':'', 'recommendation':''}, ...] ...}
 
@@ -69,11 +71,10 @@ def dict_printer(dict, file_format):
                     # so that mispelling/miscapitalization in dict keys do not affect the code
                     # And also, it makes printing adaptable in case we add more/different labels
 
+                    warning_count += 1
+                    f.write(indenter(4, f"{warning_count})") + '\n')
                     # section_label is (usually) 'warning' 'explanation', or 'recommendation'
                     # text is corresponding warning/explanation/recommendation text
-                    warning_count += 1
-                    
-                    f.write(indenter(4, f"{warning_count})") + '\n')
                     for section_label, text in w.items():
                         f.write(indenter(8, f"{section_label.upper()}:") + '\n')
                         f.write(indenter(12, f"{text}") + '\n')
@@ -91,6 +92,33 @@ def dict_printer(dict, file_format):
 
     count[0] = warning_count
     return filepath
+
+# def get_all_warnings():
+#     all_warnings = {}
+#     all_warnings.extend(policy_warnings)
+#     all_warnings.extend(EC2_VPC_checks)
+#     return all_warnings
+
+def get_policy_warnings():
+    'returns dictionary of IAM policy warnings'
+    return policy_warnings
+def get_EC2_VPC_warnings():
+    'returns dictionary of IAM warnings related to EC2/VPC'
+    return EC2_VPC_checks
+def get_all_warnings():
+    'returns all IAM warnings'
+    w = {}
+    w.update(get_policy_warnings())
+    w.update(get_EC2_VPC_warnings())
+    return w
+
+def iam_checks_writer(warning_category, error_dict):
+    try:
+        policy_warnings[warning_category]
+    except KeyError:
+        policy_warnings[warning_category] = []
+
+    policy_warnings[warning_category].append(error_dict)
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
 
@@ -371,11 +399,13 @@ def check_IAM_EC2_configurations(ec2_clients):
 
 
 def check_policy_passrole_overly_permissive(policy, policy_doc):
-    print('Checking for IAM policies that allow an overly permissive passrole...')
     """Check that policy does not allow PassRole to pass roles for any service.
     If it did, an IAM identity with this policy could grant extra permissions
     to any service, posing major security risk"""
+
+    print('Checking for IAM policies that allow an overly permissive passrole...')
     for stmt in policy_doc['Statement']:
+        bad_pairs = []
         if stmt['Effect'] != 'Allow':
             continue
 
@@ -384,20 +414,15 @@ def check_policy_passrole_overly_permissive(policy, policy_doc):
             if action in passrole_actions:
                 for resource in stmt['Resource']:
                     if resource == '*':
+                        bad_pairs.append("'" + action+':'+resource + "'")
                         passrole_overly_permissive = True
                         break
         if passrole_overly_permissive == False:
             continue
         
-        try:
-            policy_warnings[policy['PolicyName']]
-        except KeyError:
-            policy_warnings[policy['PolicyName']] = []
-
-        policy_warnings[policy['PolicyName']].append(
-                    {
+        error_dict = {
 "Warning" : 
-"""iam:PassRole overly permissive"""
+f"""iam:PassRole overly permissive with action-resource pair {', '.join(bad_pairs)} in statement {stmt} in policy {policy['PolicyName']}"""
 ,
 "Explanation" : 
 """Any IAM identity (i.e. users, groups, or roles) 
@@ -416,8 +441,9 @@ More info: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrol
 
 If you do not want iam:PassRole to be permitted:
 - Specify iam actions explicitly in 'Action'"""
-                    }
-        )
+        }
+
+        iam_checks_writer('iam:PassRole overly permissive', error_dict)
 
 def analyze_local_managed_policies(iam):
     '''Get and analyze policies'''
@@ -477,6 +503,4 @@ f"""----- Policy Name: {policy_name} -----
 def run_all_checks(iam):
     print('Running all checks for iam...')
     return NotImplementedError
-
-
 

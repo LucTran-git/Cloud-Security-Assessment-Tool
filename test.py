@@ -2,10 +2,14 @@ import boto3
 import json
 import botocore
 
+import matplotlib.pyplot as plt 
+
 from service_analyzers import iam
 from service_analyzers import ec2
 from service_analyzers import s3
 from service_analyzers import vpc
+
+all_warnings = {}
 
 # open session with the account
 with open('Credentials.json', 'r') as credsFile:
@@ -24,9 +28,10 @@ secretAccessKey = credsData['AWS']['secret_access_key']
 session = boto3.Session(aws_access_key_id=accessKeyId, aws_secret_access_key=secretAccessKey)
 
 print('Populating service clients...')
-
-print('Acquiring iam client...')
 clients = {}
+
+###---------------------------------------------------IAM SECTION----------------------------------------------------------------------
+print('Acquiring iam client...')
 clients['iam'] = session.client('iam')
 
 ###---------------------------------------------------EC2 SECTION----------------------------------------------------------------------
@@ -44,24 +49,78 @@ for regionName in session.get_available_regions('ec2'):
         pass
 
 #2.create a list of service "client" objects for each region for the service and obtain a description of those EC2 instances
+
 print('Creating list of ec2 clients...')
 ec2_clients_List = []
-
 
 for i in range(len(ec2_regions)):
     ec2_clients_List.append(session.client('ec2', ec2_regions[i]))
 
 clients['ec2'] = ec2_clients_List
 
+###---------------------------------------------------------------------------------------------------------------------------------------
+
+clients['s3'] = session.client('s3')
+clients['vpc'] = session.client('vpc')
+
+###-------------------------------------------------- PERFORM CHECKS -----------------------------------------------------------
+
 iam.check_IAM_EC2_configurations(clients['ec2'])
-# ---------------------------------------------------------------------------------------------------------------------------------------
-
-# clients['s3'] = session.client('s3')
-# clients['vpc'] = session.client('vpc')
-
-#iam.run_all_checks(clients['iam'])
 iam.analyze_local_managed_policies(clients['iam'])  
-#print(clients['iam'])
-# ---------------------------------------------------------------------------------------------------------------------------------------
-ec2 = boto3.client('ec2')
-ec2.check_EC2_VPC_configurations(ec2)
+# ec2.check_EC2_VPC_configurations(ec2)
+
+# all_warnings contains services, which contain warning_categories, which contain warning_instances:
+# all_warnings 
+#  |
+#  services
+#   |
+#   warning_categories
+#    |
+#    warning instances
+
+for service, client in clients.items():
+
+    if service == 'IAM':
+        all_warnings['IAM'] = iam.get_policy_warnings()
+        all_warnings['IAM'].update(iam.get_EC2_VPC_warnings())
+
+
+### UNIQUE WARNINGS PER SERVICE ###
+x = []
+y = []
+
+for service, wc_dict in all_warnings.items():
+    x.append(service)
+    y.append(len(wc_dict))
+
+fig, ax = plt.subplots()
+ax.bar(x=x, height=y)
+
+plt.xlabel('Services') 
+plt.ylabel('# of types of warnings') 
+plt.title('# of types of warnings per service') 
+plt.savefig('logs/types_of_warnings_per_service.png') 
+plt.show() 
+# btw, u have to savefig before show. after show is called, a new (blank) figure is created 
+
+### TOTAL WARNINGS PER SERVICE ###
+x = []
+y = []
+
+for service, wc_dict in all_warnings.items():
+    w_cnt = 0
+    for _, w_list in wc_dict.items():
+        w_cnt += len(w_list)
+    x.append(service)
+    y.append(w_cnt)
+
+fig, ax = plt.subplots()
+ax.bar(x=x, height=y)
+
+plt.xlabel('Services') 
+plt.ylabel("total # of warnings") 
+plt.title('total # of warnings per service') 
+plt.savefig('logs/total_warnings_per_service.png')
+plt.show() 
+
+print(json.dumps(all_warnings, indent=4))
