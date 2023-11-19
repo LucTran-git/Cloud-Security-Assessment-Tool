@@ -9,6 +9,8 @@ from service_analyzers import ec2
 from service_analyzers import s3
 from service_analyzers import vpc
 
+ec2 = boto3.client('ec2')
+
 all_warnings = {}
 
 # open session with the account
@@ -67,7 +69,7 @@ clients['vpc'] = session.client('vpc')
 
 iam.check_IAM_EC2_configurations(clients['ec2'])
 iam.analyze_local_managed_policies(clients['iam'])  
-# ec2.check_EC2_VPC_configurations(ec2)
+ec2.check_EC2_VPC_configurations(ec2)
 
 # all_warnings contains services, which contain warning_categories, which contain warning_instances:
 # all_warnings 
