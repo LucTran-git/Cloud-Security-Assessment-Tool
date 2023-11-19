@@ -1,1282 +1,1072 @@
 ----- Check Name: EC2 Unencrypted EBS volumes -----
 
-| Warning | Unencrypted EBS volume vol-02ca7209914f48938 in region us-east-1
-| Explanation | EBS volumes should be encrypted to protect data confidentiality
-| Recommendation | Encrypt the EBS volume using the EC2 console or the AWS CLI
+| Warning | Unencrypted EBS volume vol-0a478a78c14aebf3d in region us-east-1
+| Explanation | EBS volumes should be encrypted to make sure that no compromise and protect data confidentiality
+| Recommendation | Encrypt and secure the EBS volume by employing the EC2 console encryption or the AWS CLI
 
-| Warning | Unencrypted EBS volume vol-0ff11bdf520d509fa in region us-east-1
-| Explanation | EBS volumes should be encrypted to protect data confidentiality
-| Recommendation | Encrypt the EBS volume using the EC2 console or the AWS CLI
+----- Check Name: Open Ports in VPCs -----
 
-| Warning | Unencrypted EBS volume vol-074259eaffcca1f50 in region us-east-1
-| Explanation | EBS volumes should be encrypted to protect data confidentiality
-| Recommendation | Encrypt the EBS volume using the EC2 console or the AWS CLI
+| Warning | Open port(s) found in security group Open Memcached (sg-005d3ed1fe869afee) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 11211-11211/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenCassandraClient (sg-06275f3284635685e) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 9042-9042/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenNetBIOS (sg-08535810994be2232) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 137-137/udp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenHadoopHDFSNameNodeWebUI (sg-039ad91ec2435df66) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 50070-50070/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-3 (sg-0497ed0b110248269) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenTelnet (sg-050d1a6d5ee232579) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 23-23/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-2 (sg-075bb6e575fc280e2) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenOracleAutoDataWarehouse (sg-09bc54e35575e7bca) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 1522-1522/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open Cassandra Thrift (sg-0485f8925245d93b6) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 9160-9160/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group CloudProjSecGroup2 (sg-02688dbb2c4a928cf) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 0-0/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-7 (sg-09d9e2cc1493b7faf) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open Internal Web (sg-02d07613b78f1bca9) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 80-80/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenSMBoTCP (sg-0b7910a66929e74e7) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 445-445/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenVNCClient (sg-0dcf940797d432545) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 5900-5900/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenOracle (sg-081d19bfff2c81456) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 1521-1521/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenSMTP (sg-0a2ffaa24c9b3b9e2) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 25-25/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open SNMP (sg-0bc38bae2b0358f19) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 161-161/udp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenSalt (sg-07824c88ec64e8cf6) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 4505-4506/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group CloudProjSecGroup4 (sg-09d54d58ad61e999f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 3306-3306/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open Cassandra Monitoring (sg-071b776d3053acb15) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 7199-7199/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenCassandraInternode (sg-03f5e4e40866a610a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 7000-7001/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open HTTPS (sg-0e5f341255a137481) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 443-443/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenFTP (sg-041cf62e043f2e4b8) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 21-21/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenPostgreSQL (sg-061fbdd9bcfb3121a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 5432-5432/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open LDAPS (sg-0cd9491233da2f029) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 636-636/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-4 (sg-02c1f1b8492ca9685) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenRDP (sg-06f527e6b6331c2c5) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 3389-3389/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-1 (sg-0f45e4461d7211df0) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenMongoDB (sg-0e1f48e619364783a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 27017-27017/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open VNC Server (sg-02bf6e24c1fbba64a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 5900-5900/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-8 (sg-0763cfafed9d4596f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 80-80/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-8 (sg-0763cfafed9d4596f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-8 (sg-0763cfafed9d4596f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 443-443/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open Redis (sg-0cfdf612d5d3394ac) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 6379-6379/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenKibana (sg-05e847342bae470bd) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 5601-5601/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenCIFS (sg-0d242b6ecd9bded14) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 445-445/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group launch-wizard-6 (sg-0bad940abb5d34cfc) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open LDAP (sg-06614001dc4ae89a1) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 389-389/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenRPC (sg-0db69aef5cda69eda) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 135-135/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group Open HTTP (sg-0fa527b7378b4c0fd) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 80-80/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenSSH (sg-0fb6ed3f9af7852fe) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group CloudProjNatGroup2 (sg-03aebc51c5d6f164f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 100-100/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group CloudProjNatGroup2 (sg-03aebc51c5d6f164f) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) -1--1/icmp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenSQLServer (sg-0a00c6419206fb91a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 1433-1433/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group OpenDocker (sg-0ca79d93944756d8a) of VPC vpc-01a21b5840559ffc9 in region us-east-1
+| Explanation | For security purposes, Port(s) 2375-2375/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
+
+| Warning | Open port(s) found in security group my-security-group (sg-00fae4c0a65eb2f09) of VPC vpc-099367eebebf9060d in region us-west-2
+| Explanation | For security purposes, Port(s) 22-22/tcp must not be open to the internet
+| Recommendation | Restrict and limit port(s) access to a trusted set of IP addresses
 
 ----- Check Name: EC2 EBS Backup -----
 
-| Warning | EBS volume vol-02ca7209914f48938 for EC2 instance i-08121e25f4d1aeb6c in region us-east-1 has no backup enabled
-| Explanation | EBS volumes backups are critical to ensure data durability and availability
-| Recommendation | Enable EBS backups using the EC2 console or the AWS CLI
+| Warning | EBS volume vol-0a478a78c14aebf3d for EC2 instance i-0ed019ab74d7020f4 in region us-east-1 has no backup enabled
+| Explanation | Enable EBS volumes backups are critical and playing essential role to ensure data durability and availability
+| Recommendation | Enable EBS backups (snapshots) using the EC2 console or the AWS CLI
 
-| Warning | EBS volume vol-0ff11bdf520d509fa for EC2 instance i-05e088c8b13cd91ea in region us-east-1 has no backup enabled
-| Explanation | EBS volumes backups are critical to ensure data durability and availability
-| Recommendation | Enable EBS backups using the EC2 console or the AWS CLI
-
-| Warning | EBS volume vol-074259eaffcca1f50 for EC2 instance i-00b5cddfe13e8c77e in region us-east-1 has no backup enabled
-| Explanation | EBS volumes backups are critical to ensure data durability and availability
-| Recommendation | Enable EBS backups using the EC2 console or the AWS CLI
-
-| Warning | EBS volume vol-0424ea44eb0a160d1 for EC2 instance i-0d85f975ecee2c083 in region us-east-1 has no backup enabled
-| Explanation | EBS volumes backups are critical to ensure data durability and availability
-| Recommendation | Enable EBS backups using the EC2 console or the AWS CLI
 ----- Check Name: Wide Open Ingress Rule in Security Groups -----
 
-| Warning | Wide open ingress rule found in security group sg-02688dbb2c4a928cf in region us-east-1
-| Explanation | Security groups should restrict access to only the necessary ports and IP ranges
-| Recommendation | Update the security group rules to restrict access to only the necessary ports and IP ranges
+| Warning | A security group with a wide open ingress rule found in sg-02688dbb2c4a928cf in region us-east-1
+| Explanation | Restrict access to open ingress rule in security groups to only the necessary ports
+| Recommendation | Revise the security group rules to restrict access to only the necessary ports
 
 ----- Check Name:  EC2 instances with public IP addresses -----
 
-| Warning | EC2 instance i-044c5dfa2ef8dd029 in region us-east-1 has a public IP address
-| Explanation | Exposing EC2 instances to the internet with public IP addresses can increase security risks
-| Recommendation | Consider using a bastion host or a VPN connection to securely access EC2 instances without public IP addresses
-
 ----- Check Name: Unassociated EIPs -----
-
-| Warning | Unassociated EIP 3.229.240.66 in region us-east-1
-| Explanation | Unassociated EIPs can cause billing issues and should be released if not needed
-| Recommendation | Release the unassociated EIP 3.229.240.66 using the EC2 console or the AWS CLI
 
 ----- Check Name: Excessive security group rules -----
 
-| Warning | Excessive security group rules found in security group sg-02688dbb2c4a928cf in region us-east-1
-| Explanation | Security groups with excessive rules can lead to increased security risks and difficulties in management
-| Recommendation | Simplify the security group rules by consolidating overlapping rules, or consider using AWS Network Firewall
-
------ Check Name: EC2 instances using key-based login -----
-
-| Warning | EC2 instance i-08121e25f4d1aeb6c in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
-| Warning | EC2 instance i-05e088c8b13cd91ea in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
-| Warning | EC2 instance i-00b5cddfe13e8c77e in region us-east-1 uses key-based login
-| Explanation | Key-based login can be less secure than other authentication methods
-| Recommendation | Use a more secure authentication method, such as multi-factor authentication or IAM roles
-
------ Check Name: EC2 Unused EBS Volumes -----
-
-| Warning | Unused EBS volume vol-02ca7209914f48938 in region us-east-1
-| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
-| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
-
-| Warning | Unused EBS volume vol-0ff11bdf520d509fa in region us-east-1
-| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
-| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
-
-| Warning | Unused EBS volume vol-0424ea44eb0a160d1 in region us-east-1
-| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
-| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
-
-| Warning | Unused EBS volume vol-074259eaffcca1f50 in region us-east-1
-| Explanation | Unused EBS volumes are billed, so it's important to regularly check for and remove any unused volumes to avoid unnecessary costs
-| Recommendation | Check if the volume is still needed and if not, delete it using the EC2 console or the AWS CLI
-
------ Check Name: unused Virtual Private Gateways -----
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-003352841fe0c11a7 in region ap-south-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0a752b3f2254370ba in region eu-north-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-02b5a653f2c098ed2 in region eu-west-3
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-074b606864858c04c in region eu-west-2
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0250113415f430997 in region eu-west-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0d8a82c4a2e49e98c in region ap-northeast-3
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0956a6c27411a97bd in region ap-northeast-2
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-073dbe2726f198404 in region ap-northeast-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0a464e8c3f233f874 in region ca-central-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0c0d225a0d272bb20 in region sa-east-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-02a5acda3ae1abeda in region ap-southeast-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0c1ed902e1f39f86c in region ap-southeast-2
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-091c45219d88990eb in region eu-central-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-08ddc9b01ceadb8ac in region us-east-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-0125ffc8ce95c646c in region us-east-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-033b73e452d31e65d in region us-east-2
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-051e2f0eb1d2602d9 in region us-west-1
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
-| Warning | Unused Virtual Private Gateway in VPC vpc-099367eebebf9060d in region us-west-2
-| Explanation | Unused Virtual Private Gateways may pose security risks and incur unnecessary charges
-| Recommendation | Remove the unused Virtual Private Gateway from the VPC using the AWS Management Console or the AWS CLI
-
------ Check Name: VPC Firewalls -----
-
-| Warning | Security group OpenRPC in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Memcached in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenHadoopHDFSNameNodeWebUI in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenOracleAutoDataWarehouse in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Cassandra Thrift in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenKibana in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSMTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenPostgreSQL in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenMongoDB in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open SNMP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenFTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjSecGroup4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenRDP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCassandraClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open LDAP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenTelnet in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSQLServer in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSSH in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjNatGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open VNC Server in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Internal Web in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Redis in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenDocker in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCIFS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenCassandraInternode in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenVNCClient in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenOracle in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open LDAPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-4 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open Cassandra Monitoring in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-1 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group CloudProjSecGroup2 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open HTTPS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group Open HTTP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-3 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSalt in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenNetBIOS in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group launch-wizard-6 in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group OpenSMBoTCP in VPC vpc-01a21b5840559ffc9 allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
-
-| Warning | Security group my-security-group in VPC vpc-099367eebebf9060d allows traffic from all IPs
-| Explanation | Allowing traffic from all IPs can make the resources exposed to the internet
-| Recommendation | Restrict the inbound traffic to only the necessary IP addresses or ranges
+| Warning | Security group sg-02688dbb2c4a928cf in region us-east-1 has excessive security group rules
+| Explanation | Excessive rules in the security groups can lead to increased security risks and struggles in management
+| Recommendation | Use AWS Network Firewall or merge the overlapping rules in the security group
 
 ----- Check Name: Network ACL without tags -----
 
-| Warning | Network ACL acl-07f41cd42e4208953 in region ap-south-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-07f41cd42e4208953 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-07f41cd42e4208953 does not have any tags in region ap-south-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-07f41cd42e4208953
 
-| Warning | Network ACL acl-017d3ce75bd32752e in region eu-north-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-017d3ce75bd32752e using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-017d3ce75bd32752e does not have any tags in region eu-north-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-017d3ce75bd32752e
 
-| Warning | Network ACL acl-0694c4d0f62a520e2 in region eu-west-3 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0694c4d0f62a520e2 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0694c4d0f62a520e2 does not have any tags in region eu-west-3
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0694c4d0f62a520e2
 
-| Warning | Network ACL acl-050b768e9df7e27d6 in region eu-west-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-050b768e9df7e27d6 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-050b768e9df7e27d6 does not have any tags in region eu-west-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-050b768e9df7e27d6
 
-| Warning | Network ACL acl-0a5d75873464b4dd5 in region eu-west-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0a5d75873464b4dd5 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0a5d75873464b4dd5 does not have any tags in region eu-west-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0a5d75873464b4dd5
 
-| Warning | Network ACL acl-0b50723163427b851 in region ap-northeast-3 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0b50723163427b851 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0b50723163427b851 does not have any tags in region ap-northeast-3
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0b50723163427b851
 
-| Warning | Network ACL acl-0e55914845a5df540 in region ap-northeast-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0e55914845a5df540 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0e55914845a5df540 does not have any tags in region ap-northeast-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0e55914845a5df540
 
-| Warning | Network ACL acl-0c9580f2556e164ce in region ap-northeast-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0c9580f2556e164ce using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0c9580f2556e164ce does not have any tags in region ap-northeast-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0c9580f2556e164ce
 
-| Warning | Network ACL acl-0c72be2bc1c87f03e in region ca-central-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0c72be2bc1c87f03e using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0c72be2bc1c87f03e does not have any tags in region ca-central-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0c72be2bc1c87f03e
 
-| Warning | Network ACL acl-0fc77778a6c30c01f in region sa-east-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0fc77778a6c30c01f using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0fc77778a6c30c01f does not have any tags in region sa-east-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0fc77778a6c30c01f
 
-| Warning | Network ACL acl-0a421714f660b0f2c in region ap-southeast-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0a421714f660b0f2c using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0a421714f660b0f2c does not have any tags in region ap-southeast-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0a421714f660b0f2c
 
-| Warning | Network ACL acl-0e8fa595b3f77ab80 in region ap-southeast-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0e8fa595b3f77ab80 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0e8fa595b3f77ab80 does not have any tags in region ap-southeast-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0e8fa595b3f77ab80
 
-| Warning | Network ACL acl-017aa61e576262908 in region eu-central-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-017aa61e576262908 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-017aa61e576262908 does not have any tags in region eu-central-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-017aa61e576262908
 
-| Warning | Network ACL acl-0033b950216702805 in region us-east-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0033b950216702805 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0033b950216702805 does not have any tags in region us-east-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0033b950216702805
 
-| Warning | Network ACL acl-05f52320828137b18 in region us-east-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-05f52320828137b18 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-05f52320828137b18 does not have any tags in region us-east-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-05f52320828137b18
 
-| Warning | Network ACL acl-08803da59a5cf7f01 in region us-east-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-08803da59a5cf7f01 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-08803da59a5cf7f01 does not have any tags in region us-east-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-08803da59a5cf7f01
 
-| Warning | Network ACL acl-0706bdd0495a61ed6 in region us-east-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0706bdd0495a61ed6 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0706bdd0495a61ed6 does not have any tags in region us-east-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0706bdd0495a61ed6
 
-| Warning | Network ACL acl-07d0c7b29d94aceab in region us-west-1 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-07d0c7b29d94aceab using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-07d0c7b29d94aceab does not have any tags in region us-west-1
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-07d0c7b29d94aceab
 
-| Warning | Network ACL acl-0b9d9327eb4a70a21 in region us-west-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-0b9d9327eb4a70a21 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-0b9d9327eb4a70a21 does not have any tags in region us-west-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-0b9d9327eb4a70a21
 
-| Warning | Network ACL acl-08396a50cc88d87d0 in region us-west-2 does not have any tags
-| Explanation | Tagging resources makes it easier to identify, organize, and search for them later
-| Recommendation | Add tags to Network ACL acl-08396a50cc88d87d0 using the EC2 console or the AWS CLI
+| Warning | Network ACL acl-08396a50cc88d87d0 does not have any tags in region us-west-2
+| Explanation | Tagging resources makes it easier to organize resources, categorize, and search for them in AWS based on different criteria
+| Recommendation | Use the EC2 console or the AWS CLI to add tags to Network ACL acl-08396a50cc88d87d0
+
+----- Check Name: EC2 instances using key-based login -----
+
+| Warning | EC2 instance i-0ed019ab74d7020f4 uses key-based login in region us-east-1 
+| Explanation | Key-based login is an authentication method and it offers lower secure than other methods
+| Recommendation | Use other secure authentication methods such as Identity and Access Management (IAM) roles or multi-factor authentication (MFA)
+
+----- Check Name: EC2 Unused EBS Volumes -----
+
+----- Check Name: unused Virtual Private Gateways -----
+
+| Warning | VPC vpc-003352841fe0c11a7 has unused Virtual Private Gateway in region ap-south-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0a752b3f2254370ba has unused Virtual Private Gateway in region eu-north-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-02b5a653f2c098ed2 has unused Virtual Private Gateway in region eu-west-3
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-074b606864858c04c has unused Virtual Private Gateway in region eu-west-2
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0250113415f430997 has unused Virtual Private Gateway in region eu-west-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0d8a82c4a2e49e98c has unused Virtual Private Gateway in region ap-northeast-3
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0956a6c27411a97bd has unused Virtual Private Gateway in region ap-northeast-2
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-073dbe2726f198404 has unused Virtual Private Gateway in region ap-northeast-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0a464e8c3f233f874 has unused Virtual Private Gateway in region ca-central-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0c0d225a0d272bb20 has unused Virtual Private Gateway in region sa-east-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-02a5acda3ae1abeda has unused Virtual Private Gateway in region ap-southeast-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0c1ed902e1f39f86c has unused Virtual Private Gateway in region ap-southeast-2
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-091c45219d88990eb has unused Virtual Private Gateway in region eu-central-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-01a21b5840559ffc9 has unused Virtual Private Gateway in region us-east-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-08ddc9b01ceadb8ac has unused Virtual Private Gateway in region us-east-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-0125ffc8ce95c646c has unused Virtual Private Gateway in region us-east-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-033b73e452d31e65d has unused Virtual Private Gateway in region us-east-2
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-051e2f0eb1d2602d9 has unused Virtual Private Gateway in region us-west-1
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+| Warning | VPC vpc-099367eebebf9060d has unused Virtual Private Gateway in region us-west-2
+| Explanation | Unused Virtual Private Gateways cloud lead to security risks and result in avoidable expense.
+| Recommendation | Use the EC2 console or the AWS CLI to remove the unused Virtual Private Gateway from the VPC
+
+----- Check Name: VPC Firewalls -----
+
+| Warning | Security group Open Memcached allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenCassandraClient allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenNetBIOS allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenHadoopHDFSNameNodeWebUI allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-3 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenTelnet allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-2 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenOracleAutoDataWarehouse allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open Cassandra Thrift allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group CloudProjSecGroup2 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-7 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open Internal Web allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenSMBoTCP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenVNCClient allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenOracle allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenSMTP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open SNMP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenSalt allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group CloudProjSecGroup4 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open Cassandra Monitoring allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenCassandraInternode allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open HTTPS allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenFTP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenPostgreSQL allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open LDAPS allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-4 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenRDP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-1 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenMongoDB allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open VNC Server allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-8 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-8 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-8 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open Redis allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenKibana allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenCIFS allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group launch-wizard-6 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open LDAP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenRPC allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group Open HTTP allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenSSH allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group CloudProjNatGroup2 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group CloudProjNatGroup2 allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenSQLServer allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group OpenDocker allows traffic from all IPs in VPC vpc-01a21b5840559ffc9
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
+
+| Warning | Security group my-security-group allows traffic from all IPs in VPC vpc-099367eebebf9060d
+| Explanation | Allowing traffic from all IPs can leave resources vulnerable and exposed on the internet
+| Recommendation | Use the EC2 console or the AWS CLI to restrict the inbound traffic to only the necessary IP addresses
 
 ----- Check Name: Security groups with open all ports/protocols egress -----
 
-| Warning | Security group sg-070ae5286b0ffb7c7 in region ap-south-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0fb88cbff36e694ed in region eu-north-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-05f8696edbc60d836 in region eu-west-3 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0f3e662df65b3e0fc in region eu-west-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-00f1cbc0903d65fb4 in region eu-west-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-09ef638cdc071f9d9 in region ap-northeast-3 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0ae5316bb6cc56771 in region ap-northeast-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-05ca5c844eceaa81d in region ap-northeast-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0eb9e1e878c80ffe6 in region ca-central-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0de2d2ee53bfd214c in region sa-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0b42be8a1a89f5951 in region ap-southeast-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-04502e4ea67ef474b in region ap-southeast-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0b75af2115db29e89 in region eu-central-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0db69aef5cda69eda in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-039ad91ec2435df66 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-005d3ed1fe869afee in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-09bc54e35575e7bca in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0a2ffaa24c9b3b9e2 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0485f8925245d93b6 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-05e847342bae470bd in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-061fbdd9bcfb3121a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0af58ca778ea3a990 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0e1f48e619364783a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0bc38bae2b0358f19 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-09d54d58ad61e999f in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-06f527e6b6331c2c5 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0b84b065e60fcb69c in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-06275f3284635685e in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-06614001dc4ae89a1 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-075bb6e575fc280e2 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0c5cfe9d58b1e93e9 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-050d1a6d5ee232579 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0fb6ed3f9af7852fe in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0a00c6419206fb91a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-03aebc51c5d6f164f in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-02bf6e24c1fbba64a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-02d07613b78f1bca9 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0cfdf612d5d3394ac in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0975dd850786d7fe9 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0d242b6ecd9bded14 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0ca79d93944756d8a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-03f5e4e40866a610a in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0dcf940797d432545 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0cd9491233da2f029 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-081d19bfff2c81456 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-071b776d3053acb15 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-02c1f1b8492ca9685 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0f45e4461d7211df0 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0e5f341255a137481 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-02688dbb2c4a928cf in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0fa527b7378b4c0fd in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0497ed0b110248269 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-07824c88ec64e8cf6 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0bad940abb5d34cfc in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-08535810994be2232 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0b7910a66929e74e7 in region us-east-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-08b2fbc6a340bbd32 in region us-east-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0f3ab9583619057e3 in region us-west-1 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-0df17ca06c4dc36eb in region us-west-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
-| Warning | Security group sg-00fae4c0a65eb2f09 in region us-west-2 allows all ports and protocols for egress traffic
-| Explanation | Allowing all ports and protocols for egress traffic can pose a security risk as it allows any outbound traffic
-| Recommendation | Restrict egress traffic to only necessary ports and protocols using the EC2 console or the AWS CLI
-
------ Check Name: Open DNS in VPCs -----
-
-| Warning | DNS resolution is not enabled for VPC vpc-003352841fe0c11a7 in region ap-south-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-003352841fe0c11a7 in region ap-south-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0a752b3f2254370ba in region eu-north-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0a752b3f2254370ba in region eu-north-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-02b5a653f2c098ed2 in region eu-west-3
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-02b5a653f2c098ed2 in region eu-west-3
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-074b606864858c04c in region eu-west-2
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-074b606864858c04c in region eu-west-2
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0250113415f430997 in region eu-west-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0250113415f430997 in region eu-west-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0d8a82c4a2e49e98c in region ap-northeast-3
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0d8a82c4a2e49e98c in region ap-northeast-3
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0956a6c27411a97bd in region ap-northeast-2
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0956a6c27411a97bd in region ap-northeast-2
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-073dbe2726f198404 in region ap-northeast-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-073dbe2726f198404 in region ap-northeast-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0a464e8c3f233f874 in region ca-central-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0a464e8c3f233f874 in region ca-central-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0c0d225a0d272bb20 in region sa-east-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0c0d225a0d272bb20 in region sa-east-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-02a5acda3ae1abeda in region ap-southeast-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-02a5acda3ae1abeda in region ap-southeast-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0c1ed902e1f39f86c in region ap-southeast-2
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0c1ed902e1f39f86c in region ap-southeast-2
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-091c45219d88990eb in region eu-central-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-091c45219d88990eb in region eu-central-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-08ddc9b01ceadb8ac in region us-east-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-08ddc9b01ceadb8ac in region us-east-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-0125ffc8ce95c646c in region us-east-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-0125ffc8ce95c646c in region us-east-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-033b73e452d31e65d in region us-east-2
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-033b73e452d31e65d in region us-east-2
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-051e2f0eb1d2602d9 in region us-west-1
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-051e2f0eb1d2602d9 in region us-west-1
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS resolution is not enabled for VPC vpc-099367eebebf9060d in region us-west-2
-| Explanation | Enabling DNS resolution can help resolve domain names to IP addresses for instances in your VPC
-| Recommendation | Enable DNS resolution for your VPC using the VPC console or the AWS CLI
-
-| Warning | DNS hostnames are not enabled for VPC vpc-099367eebebf9060d in region us-west-2
-| Explanation | Enabling DNS hostnames can help resolve instance hostnames to domain names in your VPC
-| Recommendation | Enable DNS hostnames for your VPC using the VPC console or the AWS CLI
-
------ Check Name: VPCs Open for Oracle -----
-
-| Warning | Open Oracle port (1521) found in security group sg-081d19bfff2c81456 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Oracle should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Oracle to a trusted set of IP addresses or VPN
-
------ Check Name: VPC Open MySQL Ports -----
-
-| Warning | Security Group sg-09d54d58ad61e999f in VPC vpc-01a21b5840559ffc9 in region us-east-1 allows open MySQL port to the internet
-| Explanation | Allowing inbound traffic on port 3306 to the internet can expose your MySQL server to security risks
-| Recommendation | Restrict the security group to only allow MySQL traffic from trusted sources
-
------ Check Name: VPCs Open for NetBIOS -----
-
-| Warning | Open NetBIOS port (137/138) found in security group sg-08535810994be2232 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | NetBIOS should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to NetBIOS to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for PostgreSQL -----
-
-| Warning | Open PostgreSQL port (5432) found in security group sg-061fbdd9bcfb3121a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | PostgreSQL should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to PostgreSQL to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Kibana -----
-
-| Warning | Open Kibana port (5601) found in security group sg-05e847342bae470bd of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Kibana should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Kibana to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Oracle Auto Data Warehouse -----
-
-| Warning | Open Oracle ADW port (1522) found in security group sg-09bc54e35575e7bca of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Oracle ADW should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Oracle ADW to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Hadoop HDFS NameNode WebUI -----
-
-| Warning | Open Hadoop HDFS NameNode WebUI port (50070) found in security group sg-039ad91ec2435df66 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Hadoop HDFS NameNode WebUI should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Hadoop HDFS NameNode WebUI to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for FTP -----
-
-| Warning | Open FTP port (21) found in security group sg-041cf62e043f2e4b8 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | FTP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to FTP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Docker -----
-
-| Warning | Open Docker port (2375) found in security group sg-0ca79d93944756d8a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Docker should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Docker to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for CIFS -----
-
-| Warning | Open CIFS port (445) found in security group sg-0d242b6ecd9bded14 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | CIFS should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to CIFS to a trusted set of IP addresses or VPN
-
-| Warning | Open CIFS port (445) found in security group sg-0b7910a66929e74e7 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | CIFS should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to CIFS to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for RDP -----
-
-| Warning | Open RDP port (3389) found in security group sg-06f527e6b6331c2c5 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | RDP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to RDP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for RPC -----
-
-| Warning | Open RPC port (135) found in security group sg-0db69aef5cda69eda of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | RPC should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to RPC to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Salt -----
-
-| Warning | Open Salt port (4505/4506) found in security group sg-07824c88ec64e8cf6 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Salt should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Salt to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for SMB over TCP -----
-
-| Warning | Open SMB over TCP port (445) found in security group sg-0d242b6ecd9bded14 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SMB over TCP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SMB over TCP to a trusted set of IP addresses or VPN
-
-| Warning | Open SMB over TCP port (445) found in security group sg-0b7910a66929e74e7 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SMB over TCP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SMB over TCP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for SMTP -----
-
-| Warning | Open SMTP port (25) found in security group sg-0a2ffaa24c9b3b9e2 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SMTP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SMTP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for SQL Server -----
-
-| Warning | Open SQL Server port (1433) found in security group sg-0a00c6419206fb91a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SQL Server should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SQL Server to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for SSH -----
-
-| Warning | Open SSH port (22) found in security group sg-075bb6e575fc280e2 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-0fb6ed3f9af7852fe of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-02c1f1b8492ca9685 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-0f45e4461d7211df0 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-0497ed0b110248269 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-0bad940abb5d34cfc of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
-| Warning | Open SSH port (22) found in security group sg-00fae4c0a65eb2f09 of VPC vpc-099367eebebf9060d in region us-west-2
-| Explanation | SSH should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SSH to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Telnet -----
-
-| Warning | Open Telnet port (23) found in security group sg-050d1a6d5ee232579 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Telnet should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Telnet to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for VNC Client -----
-
-| Warning | Open VNC Client port (5900) found in security group sg-02bf6e24c1fbba64a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | VNC client should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to VNC client to a trusted set of IP addresses or VPN
-
-| Warning | Open VNC Client port (5900) found in security group sg-0dcf940797d432545 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | VNC client should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to VNC client to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for VNC Server -----
-
-| Warning | Open VNC Server port (5900) found in security group sg-02bf6e24c1fbba64a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | VNC server should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to VNC server to a trusted set of IP addresses or VPN
-
-| Warning | Open VNC Server port (5900) found in security group sg-0dcf940797d432545 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | VNC server should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to VNC server to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for MongoDB -----
-
-| Warning | Open MongoDB port (27017) found in security group sg-0e1f48e619364783a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | MongoDB should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to MongoDB to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Cassandra Client -----
-
-| Warning | Open Cassandra Client port (9042) found in security group sg-06275f3284635685e of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Cassandra Client should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Cassandra Client to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Cassandra Internode -----
-
-| Warning | Open Cassandra internode ports (7000-7001) found in security group sg-03f5e4e40866a610a of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Cassandra internode should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Cassandra internode to a trusted set of IP addresses or use a VPN
-
------ Check Name: VPCs Open for Cassandra Monitoring -----
-
-| Warning | Open Cassandra Monitoring port (7199) found in security group sg-071b776d3053acb15 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Cassandra Monitoring should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Cassandra Monitoring to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Cassandra Thrift -----
-
-| Warning | Open Cassandra Thrift port (9160) found in security group sg-0485f8925245d93b6 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Cassandra Thrift should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Cassandra Thrift to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for LDAP -----
-
-| Warning | Open LDAP port (389) found in security group sg-06614001dc4ae89a1 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | LDAP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to LDAP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for LDAPS -----
-
-| Warning | Open LDAPS port (636) found in security group sg-0cd9491233da2f029 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | LDAPS should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to LDAPS to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for SNMP -----
-
-| Warning | Open SNMP port (161) found in security group sg-0bc38bae2b0358f19 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | SNMP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to SNMP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Memcached -----
-
-| Warning | Open Memcached port (11211) found in security group sg-005d3ed1fe869afee of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Memcached should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Memcached to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for Redis -----
-
-| Warning | Open Redis port (6379) found in security group sg-0cfdf612d5d3394ac of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | Redis should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to Redis to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for HTTP -----
-
-| Warning | Open HTTP port (80) found in security group sg-02d07613b78f1bca9 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | HTTP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to HTTP to a trusted set of IP addresses or VPN
-
-| Warning | Open HTTP port (80) found in security group sg-0fa527b7378b4c0fd of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | HTTP should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to HTTP to a trusted set of IP addresses or VPN
-
------ Check Name: VPCs Open for HTTPS -----
-
-| Warning | Open HTTPS port (443) found in security group sg-0e5f341255a137481 of VPC vpc-01a21b5840559ffc9 in region us-east-1
-| Explanation | HTTPS should not be open to the internet as it is a security risk
-| Recommendation | Restrict access to HTTPS to a trusted set of IP addresses or VPN
+| Warning | Security group sg-070ae5286b0ffb7c7 allows all ports and protocols for egress traffic in region ap-south-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0fb88cbff36e694ed allows all ports and protocols for egress traffic in region eu-north-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-05f8696edbc60d836 allows all ports and protocols for egress traffic in region eu-west-3
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0f3e662df65b3e0fc allows all ports and protocols for egress traffic in region eu-west-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-00f1cbc0903d65fb4 allows all ports and protocols for egress traffic in region eu-west-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-09ef638cdc071f9d9 allows all ports and protocols for egress traffic in region ap-northeast-3
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0ae5316bb6cc56771 allows all ports and protocols for egress traffic in region ap-northeast-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-05ca5c844eceaa81d allows all ports and protocols for egress traffic in region ap-northeast-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0eb9e1e878c80ffe6 allows all ports and protocols for egress traffic in region ca-central-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0de2d2ee53bfd214c allows all ports and protocols for egress traffic in region sa-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0b42be8a1a89f5951 allows all ports and protocols for egress traffic in region ap-southeast-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-04502e4ea67ef474b allows all ports and protocols for egress traffic in region ap-southeast-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0b75af2115db29e89 allows all ports and protocols for egress traffic in region eu-central-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-005d3ed1fe869afee allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-06275f3284635685e allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-08535810994be2232 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-039ad91ec2435df66 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0497ed0b110248269 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-050d1a6d5ee232579 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-09bc54e35575e7bca allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-075bb6e575fc280e2 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0485f8925245d93b6 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0af58ca778ea3a990 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-02688dbb2c4a928cf allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-09d9e2cc1493b7faf allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-02d07613b78f1bca9 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0dcf940797d432545 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0b7910a66929e74e7 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0c5cfe9d58b1e93e9 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0a2ffaa24c9b3b9e2 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-081d19bfff2c81456 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0bc38bae2b0358f19 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-07824c88ec64e8cf6 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-09d54d58ad61e999f allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-071b776d3053acb15 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-03f5e4e40866a610a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0e5f341255a137481 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0cd9491233da2f029 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-061fbdd9bcfb3121a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-02c1f1b8492ca9685 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-06f527e6b6331c2c5 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0f45e4461d7211df0 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0975dd850786d7fe9 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0e1f48e619364783a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-02bf6e24c1fbba64a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0763cfafed9d4596f allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0cfdf612d5d3394ac allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-05e847342bae470bd allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0d242b6ecd9bded14 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0b84b065e60fcb69c allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0bad940abb5d34cfc allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-06614001dc4ae89a1 allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0fb6ed3f9af7852fe allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0db69aef5cda69eda allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0fa527b7378b4c0fd allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-03aebc51c5d6f164f allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0a00c6419206fb91a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0ca79d93944756d8a allows all ports and protocols for egress traffic in region us-east-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-08b2fbc6a340bbd32 allows all ports and protocols for egress traffic in region us-east-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0f3ab9583619057e3 allows all ports and protocols for egress traffic in region us-west-1
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-0df17ca06c4dc36eb allows all ports and protocols for egress traffic in region us-west-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
+
+| Warning | Security group sg-00fae4c0a65eb2f09 allows all ports and protocols for egress traffic in region us-west-2
+| Explanation | Allowing all ports and protocols for egress traffic can leave resources vulnerable and lead to security risk
+| Recommendation | Use the EC2 console or the AWS CLI to restrict egress traffic to only necessary ports
 
 ----- Check Name: Unused Security Groups -----
 
-| Warning | Unused security group sg-070ae5286b0ffb7c7 in region ap-south-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-070ae5286b0ffb7c7 unused in region ap-south-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0fb88cbff36e694ed in region eu-north-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0fb88cbff36e694ed unused in region eu-north-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-05f8696edbc60d836 in region eu-west-3
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-05f8696edbc60d836 unused in region eu-west-3
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0f3e662df65b3e0fc in region eu-west-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0f3e662df65b3e0fc unused in region eu-west-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-00f1cbc0903d65fb4 in region eu-west-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-00f1cbc0903d65fb4 unused in region eu-west-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-09ef638cdc071f9d9 in region ap-northeast-3
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-09ef638cdc071f9d9 unused in region ap-northeast-3
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0ae5316bb6cc56771 in region ap-northeast-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0ae5316bb6cc56771 unused in region ap-northeast-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-05ca5c844eceaa81d in region ap-northeast-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-05ca5c844eceaa81d unused in region ap-northeast-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0eb9e1e878c80ffe6 in region ca-central-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0eb9e1e878c80ffe6 unused in region ca-central-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0de2d2ee53bfd214c in region sa-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0de2d2ee53bfd214c unused in region sa-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0b42be8a1a89f5951 in region ap-southeast-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0b42be8a1a89f5951 unused in region ap-southeast-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-04502e4ea67ef474b in region ap-southeast-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-04502e4ea67ef474b unused in region ap-southeast-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0b75af2115db29e89 in region eu-central-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0b75af2115db29e89 unused in region eu-central-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0db69aef5cda69eda in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-005d3ed1fe869afee unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-039ad91ec2435df66 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-06275f3284635685e unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-005d3ed1fe869afee in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-08535810994be2232 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-09bc54e35575e7bca in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-039ad91ec2435df66 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0a2ffaa24c9b3b9e2 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0497ed0b110248269 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0485f8925245d93b6 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-050d1a6d5ee232579 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-05e847342bae470bd in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-09bc54e35575e7bca unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-061fbdd9bcfb3121a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-075bb6e575fc280e2 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0af58ca778ea3a990 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0485f8925245d93b6 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0e1f48e619364783a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0af58ca778ea3a990 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0bc38bae2b0358f19 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-02688dbb2c4a928cf unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-041cf62e043f2e4b8 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-09d9e2cc1493b7faf unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-09d54d58ad61e999f in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-02d07613b78f1bca9 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-06f527e6b6331c2c5 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0dcf940797d432545 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0b84b065e60fcb69c in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0b7910a66929e74e7 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-06275f3284635685e in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0c5cfe9d58b1e93e9 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-06614001dc4ae89a1 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0a2ffaa24c9b3b9e2 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-075bb6e575fc280e2 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-081d19bfff2c81456 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-050d1a6d5ee232579 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0bc38bae2b0358f19 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0fb6ed3f9af7852fe in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-07824c88ec64e8cf6 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0a00c6419206fb91a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-09d54d58ad61e999f unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-03aebc51c5d6f164f in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-071b776d3053acb15 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-02bf6e24c1fbba64a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-03f5e4e40866a610a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-02d07613b78f1bca9 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0e5f341255a137481 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0cfdf612d5d3394ac in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0cd9491233da2f029 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0975dd850786d7fe9 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-041cf62e043f2e4b8 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0d242b6ecd9bded14 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-061fbdd9bcfb3121a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0ca79d93944756d8a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-02c1f1b8492ca9685 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-03f5e4e40866a610a in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-06f527e6b6331c2c5 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0dcf940797d432545 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0f45e4461d7211df0 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0cd9491233da2f029 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0975dd850786d7fe9 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-081d19bfff2c81456 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0e1f48e619364783a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-071b776d3053acb15 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-02bf6e24c1fbba64a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0f45e4461d7211df0 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0cfdf612d5d3394ac unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0e5f341255a137481 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-05e847342bae470bd unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-02688dbb2c4a928cf in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0d242b6ecd9bded14 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0fa527b7378b4c0fd in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0b84b065e60fcb69c unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-07824c88ec64e8cf6 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0bad940abb5d34cfc unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-08535810994be2232 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-06614001dc4ae89a1 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0b7910a66929e74e7 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0fb6ed3f9af7852fe unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0541241f38601ab14 in region us-east-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0db69aef5cda69eda unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-08b2fbc6a340bbd32 in region us-east-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0fa527b7378b4c0fd unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0f3ab9583619057e3 in region us-west-1
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-03aebc51c5d6f164f unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-0df17ca06c4dc36eb in region us-west-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0541241f38601ab14 unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
 
-| Warning | Unused security group sg-00fae4c0a65eb2f09 in region us-west-2
-| Explanation | Unused security groups are a potential security risk as they may allow unauthorized access to instances
-| Recommendation | Delete the unused security group using the EC2 console or the AWS CLI
+| Warning | Security group sg-0a00c6419206fb91a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
+| Warning | Security group sg-0ca79d93944756d8a unused in region us-east-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
+| Warning | Security group sg-08b2fbc6a340bbd32 unused in region us-east-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
+| Warning | Security group sg-0f3ab9583619057e3 unused in region us-west-1
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
+| Warning | Security group sg-0df17ca06c4dc36eb unused in region us-west-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
+| Warning | Security group sg-00fae4c0a65eb2f09 unused in region us-west-2
+| Explanation | Potential security risk may cause unauthorized access to Elastic Compute Cloud (EC2) instances for having unused security groups
+| Recommendation | Use the EC2 console or the AWS CLI to revoke unused security group
+
