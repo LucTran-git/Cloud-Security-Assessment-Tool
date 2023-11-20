@@ -217,6 +217,8 @@ def check_log_file_validation_enabled(cloudtrail_clients_List):
             except Exception as e:
                 print(f'Error getting trail status for trail "{trail_name}": {e}')
 
+def get_all_warnings():
+    return cloudtrail_report
 
 def starting_function():
     # Assuming that starting_function() fills cloudtrail_clients_List with CloudTrail clients
@@ -231,4 +233,5 @@ def starting_function():
 
     dict_printer(cloudtrail_report, 'txt')
 
-starting_function()
+if __name__ == 'main':
+    starting_function()

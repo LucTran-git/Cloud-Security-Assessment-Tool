@@ -298,10 +298,10 @@ Warning Category: Security group created by launch wizard
         RECOMMENDATION:
             Review and modify the security group settings or create a separate security group
 
-Warning Category: test
+Warning Category: iam:PassRole overly permissive
     38)
         WARNING:
-            iam:PassRole overly permissive
+            iam:PassRole overly permissive with action-resource pair '*:*' in statement {'Sid': 'VisualEditor0', 'Effect': 'Allow', 'Action': 'iam:*', 'Resource': '*'} in policy test
         EXPLANATION:
             Any IAM identity (i.e. users, groups, or roles) 
             with this policy can assign roles to an instance
@@ -319,10 +319,10 @@ Warning Category: test
             If you do not want iam:PassRole to be permitted:
             - Specify iam actions explicitly in 'Action'
 
-Warning Category: test
+Warning Category: iam:PassRole overly permissive
     39)
         WARNING:
-            iam:PassRole overly permissive
+            iam:PassRole overly permissive with action-resource pair '*:*' in statement {'Sid': 'VisualEditor0', 'Effect': 'Allow', 'Action': 'iam:*', 'Resource': '*'} in policy test
         EXPLANATION:
             Any IAM identity (i.e. users, groups, or roles) 
             with this policy can assign roles to an instance

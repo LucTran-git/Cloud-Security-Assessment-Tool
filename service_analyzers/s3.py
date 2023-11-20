@@ -8,12 +8,13 @@ from os import cpu_count
 
 
 class S3SecurityChecker:
-    def __init__(self):
+    def __init__(self, session):
         # Initialize session using environment variables
-        self.session = boto3.Session(
-            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
-        )
+        # self.session = boto3.Session(
+        #     aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+        #     aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY")
+        # )
+        self.session = session
         self.s3_client = self.session.client('s3')
         self.buckets = self._get_all_buckets()
 
@@ -189,6 +190,9 @@ class S3SecurityChecker:
         bucket_count = len(self.buckets)
         max_workers = min(cpu_count(), bucket_count)
         logging.info(f"Using {max_workers} workers for {bucket_count} buckets.")
+
+        if max_workers == 0:
+            return all_warnings
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_bucket = {
