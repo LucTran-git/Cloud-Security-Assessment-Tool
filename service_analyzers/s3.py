@@ -94,13 +94,13 @@ class S3SecurityChecker:
                     "recommendation": f"Enable default encryption for {bucket_name} using AES256 algorithm"
                 }
                 warnings.append(warning)
-            else:
-                warning = {
-                    "warning": f"S3 bucket {bucket_name} in region {region} is encrypted with AES256 algorithm",
-                    "explanation": "S3 service is encrypted to protect data confidentiality",
-                    "recommendation": f"Ensure all S3 buckets in the account are similarly encrypted"
-                }
-                warnings.append(warning)
+            # else:
+            #     warning = {
+            #         "warning": f"S3 bucket {bucket_name} in region {region} is encrypted with AES256 algorithm",
+            #         "explanation": "S3 service is encrypted to protect data confidentiality",
+            #         "recommendation": f"Ensure all S3 buckets in the account are similarly encrypted"
+            #     }
+            #     warnings.append(warning)
         except ClientError as e:
             if e.response['Error']['Code'] != 'ServerSideEncryptionConfigurationNotFoundError':
                 logging.error(f"Error checking S3 encryption for {bucket_name} in region {region}: {e}")
@@ -186,43 +186,73 @@ class S3SecurityChecker:
 
     
     def get_all_warnings(self):
-        all_warnings = []
+        all_warnings = {}
         bucket_count = len(self.buckets)
+
+        if bucket_count == 0:
+            print('No buckets in S3 to check')
+            return all_warnings
+        
         max_workers = min(cpu_count(), bucket_count)
         logging.info(f"Using {max_workers} workers for {bucket_count} buckets.")
 
-        if max_workers == 0:
-            return all_warnings
-
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            future_to_bucket = {
-                executor.submit(self.check_s3_bucket_acl, bucket): bucket for bucket in self.buckets
-            }
-            future_to_bucket.update({
-                executor.submit(self.check_s3_bucket_policy, bucket): bucket for bucket in self.buckets
-            })
-            future_to_bucket.update({
-                executor.submit(self.check_s3_service_encryption, bucket): bucket for bucket in self.buckets
-            })
-            future_to_bucket.update({
-                executor.submit(self.check_s3_object_ownership, bucket, "9641163299277"): bucket for bucket in self.buckets
-            })
-            future_to_bucket.update({
-                executor.submit(self.check_s3_bucket_encryption_in_transit, bucket): bucket for bucket in self.buckets
-            })
-            future_to_bucket.update({
-                executor.submit(self.check_s3_logging_enabled, bucket): bucket for bucket in self.buckets
-            })
 
-            for future in future_to_bucket:
-                all_warnings.extend(future.result())
-        
+            # future_to_bucket = {
+            #     executor.submit(self.check_s3_bucket_acl, bucket): bucket for bucket in self.buckets
+            # }
+            # future_to_bucket.update({
+            #     executor.submit(self.check_s3_bucket_policy, bucket): bucket for bucket in self.buckets
+            # })
+            # future_to_bucket.update({
+            #     executor.submit(self.check_s3_service_encryption, bucket): bucket for bucket in self.buckets
+            # })
+            # future_to_bucket.update({
+            #     executor.submit(self.check_s3_object_ownership, bucket, "9641163299277"): bucket for bucket in self.buckets
+            # })
+            # future_to_bucket.update({
+            #     executor.submit(self.check_s3_bucket_encryption_in_transit, bucket): bucket for bucket in self.buckets
+            # })
+            # future_to_bucket.update({
+            #     executor.submit(self.check_s3_logging_enabled, bucket): bucket for bucket in self.buckets
+            # })
+
+            future_to_bucket = {'S3 bucket ACL not set up':[], 
+                                'S3 bucket overly permissive':[],
+                                'S3 service unencrypted':[],
+                                'Object in S3 bucket not owned by expected owner':[],
+                                'S3 bucket has public policy':[],
+                                'S3 bucket does not have logging enabled':[]}
+            
+            future_to_bucket['S3 bucket ACL not set up'].append(executor.submit(self.check_s3_bucket_acl, bucket) for bucket in self.buckets)
+            future_to_bucket['S3 bucket overly permissive'].append(executor.submit(self.check_s3_bucket_policy, bucket) for bucket in self.buckets)
+            future_to_bucket['S3 service unencrypted'].append(executor.submit(self.check_s3_service_encryption, bucket) for bucket in self.buckets)
+            future_to_bucket['Object in S3 bucket not owned by expected owner'].append(executor.submit(self.check_s3_object_ownership, bucket, "9641163299277") for bucket in self.buckets)
+            future_to_bucket['S3 bucket has public policy'].append(executor.submit(self.check_s3_bucket_encryption_in_transit, bucket) for bucket in self.buckets)
+            future_to_bucket['S3 bucket does not have logging enabled'].append(executor.submit(self.check_s3_logging_enabled, bucket) for bucket in self.buckets)
+
+            print(future_to_bucket)
+
+            for wc, futures in future_to_bucket.items():
+                results = []
+                for future in futures[0]: # future_to_bucket is as dictionary containing generators
+                    results.extend(future.result())
+
+                if len(results) > 0:
+                    all_warnings[wc] = results
+
+        self.write_warnings_to_file(all_warnings)
         return all_warnings
 
+    # def add_warning(self, cat_dict, category, instance_list):
+    #     if category not in cat_dict:
+    #         cat_dict[category] = instance_list
+    #     else:
+    #         cat_dict.append(instance_list)
 
-
-    def write_warnings_to_file(self, folder_path='./logs/'):
-        warnings = self.get_all_warnings()
+    def write_warnings_to_file(self, warnings):
+        folder_path='./logs/'
+        #warnings = self.get_all_warnings()
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         filename = os.path.join(folder_path, 's3_warnings.json')

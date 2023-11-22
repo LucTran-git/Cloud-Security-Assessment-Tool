@@ -1,0 +1,9 @@
+{
+    "S3 bucket does not have logging enabled": [
+        {
+            "warning": "S3 bucket filibusterbucket in region None does not have logging enabled",
+            "explanation": "Logging is crucial for auditing and security purposes",
+            "recommendation": "Enable logging for filibusterbucket using the S3 console or the AWS CLI"
+        }
+    ]
+}

@@ -15,6 +15,8 @@ def dict_printer(dict, file_format):
     # Write warnings and recommendations to a log file\n
     # Parameters: file format\n
     # Returns: filepath of written file
+
+
     if file_format == 'txt':
         filepath = 'logs/cloudtrail_report.txt'
 
@@ -181,7 +183,7 @@ def check_data_events_included(cloudtrail_clients_List):
                 warning_dict = {"warning": f"data events are not included within  cloudtrail: '{trail_name}'.",
                 "explanation": "data events are a type of event that provides detailed information about operations performed on user data in AWS services",
                 "recommendation": f"make sure data events are enabled alongside the Trail: '{trail_name}'."}
-                cloudtrail_checks_writer("Data events check", warning_dict)
+                cloudtrail_checks_writer("Data events not included in cloudtrail", warning_dict)
 
 
 
@@ -208,7 +210,7 @@ def check_log_file_validation_enabled(cloudtrail_clients_List):
                     warning_dict = {"warning": f"Log file validation is NOT enabled in the trail '{trail_name}'.",
                                     "explanation": "Enabling log file validation ensures the integrity and authenticity of CloudTrail log files.",
                                     "recommendation": f"Enable log file validation for the CloudTrail trail '{trail_name}'."}
-                    cloudtrail_checks_writer("Log File Validation Checks", warning_dict)
+                    cloudtrail_checks_writer("Log file validation not enabled in cloudtrail", warning_dict)
 
             except cloudtrail_client.exceptions.TrailNotFoundException:
                 print(f'Trail "{trail_name}" not found in region {cloudtrail_client.meta.region_name}.')
