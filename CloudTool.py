@@ -108,26 +108,26 @@ if ('all' in options or 'ec2' in options):
 #    |
 #    warning instances (list of dicts)
 
-# def w_update(main_dict, new_dict):
-#     '''
-#     Cross-warnings may be generated from the module for any related service
-#     e.g. iam-ec2 warnings generated in iam, or in ec2 modules.
+def w_update(main_dict, new_dict):
+    '''
+    Cross-warnings may be generated from the module for any related service
+    e.g. iam-ec2 warnings generated in iam, or in ec2 modules.
 
-#     This function can be used to combine those cross-warnings into one service-set 
-#     dict, but only if the service-set is named the same way. AND, if all warning 
-#     categories under the service-set dict are DIFFERENT.
+    This function can be used to combine those cross-warnings into one service-set 
+    dict, but only if the service-set is named the same way. AND, if all warning 
+    categories under each service-set dict are DIFFERENT.
 
-#     So in general, try to use alphabetical ordering for the service-set names, 
-#     and try not to do redundant warning checks in different modules.
+    So in general, try to use alphabetical ordering for the service-set names, 
+    and try not to do redundant warning checks in different modules.
 
-#     For now, this function is unused
-#     '''
-#     for key in new_dict:
-#         if key not in main_dict:
-#             main_dict[key] = new_dict
-#         else:
-#             # ASSUMES WARNING CATEGORIES ARE ALL DIFFERENT
-#             main_dict[key].extend(new_dict)
+    For now, this function is unused
+    '''
+    for key in new_dict:
+        if key not in main_dict:
+            main_dict[key] = new_dict
+        else:
+            # ASSUMES WARNING CATEGORIES ARE ALL DIFFERENT
+            main_dict[key].extend(new_dict)
 
 
 for service, client in clients.items():
@@ -175,22 +175,6 @@ y = []
 
 # In case warnings are returned in an erroneous way, we'll simply ignore them
 # However, we still keep them around because they can be used for NLP
-
-# def create_bar_graph(x_label: str, y_label: str, x, y):
-#     fig, ax = plt.subplots()
-#     ax.bar(x=x, height=y)
-
-#     title = y_label + ' Per ' + x_label
-#     plt.xticks(rotation=90)
-#     plt.xlabel(x_label) 
-#     plt.ylabel(y_label) 
-#     plt.title(title) 
-#     plt.savefig('logs/'+'_'.join(title.lower().split())+'.png') 
-#     plt.show(show_graphs) 
-
-#     return True
-
-### PROPORTION OF OCCURENCE PER KEYWORD ##
 
 ### DEFINING SOME FUNCTIONS ###
 def isolate_warning_text(label:str, all_dict:dict):
@@ -261,9 +245,8 @@ numOfKeywords = 20
 custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_threshold, top=numOfKeywords, features=None)
 ### END OF INSTANTIATION ###
 
-# x = []
-# y = []
 
+### PROPORTION OF OCCURENCE PER KEYWORD ##
 ### KEYWORDS IN EVERYTHING ###
 all_text = str(all_warnings).lower()
 keywords = custom_kw_extractor.extract_keywords(all_text)
@@ -352,13 +335,5 @@ for service_set, wc_dict in sub_warnings.items():
         continue
 
 create_hbar(y, x, 'Service Sets', 'Number of Warning Instances', max_len, 6)
-
-# fig, ax = plt.subplots()
-# ax.barh(y=y, width=y)
-# plt.ylabel('Service Sets') 
-# plt.xlabel("Number of Warning Instances") 
-# plt.title('Number of Warning Instances Per Service Set') 
-# plt.savefig('logs/total_warnings_per_service_set.png')
-# plt.show(show_graphs) 
 
 #print(json.dumps(all_warnings, indent=4))
