@@ -3,10 +3,6 @@
 <h2>OVERVIEW OF WORKINGS</h2>  
 This tool assesses the posture of your AWS account by performing security checks for focused on specific services, and outputting log files and graphs based on these findings.
 
-1. trest
-2. sdfs
-3. dsfs
-
 It is separated into 3 rounds of analysis:
 1. Manual checks (finding specific errors)    
     - Outputs log files to archive all errors found (txt or json)  
